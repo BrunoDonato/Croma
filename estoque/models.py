@@ -19,6 +19,7 @@ class Produto(models.Model):
     modelo = models.CharField(max_length=100, blank=True, null=True)
     especificacoes = models.TextField(blank=True, null=True, help_text="Detalhes técnicos, voltagem, dimensões, etc.")
 
+    quantidade = models.PositiveIntegerField(default=0)   # <<--- NOVO CAMPO
     estoque_minimo = models.PositiveIntegerField(default=0)
     ativo = models.BooleanField(default=True)
 
@@ -27,3 +28,4 @@ class Produto(models.Model):
 
     def __str__(self):
         return self.nome
+
