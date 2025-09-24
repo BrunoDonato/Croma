@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Croma{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Dashboard</h1>
+  <p>Você está autenticado. Em breve colocamos atalhos aqui (ex.: Produtos, Itens abaixo do mínimo).</p>
+  <p><a class="btn-outline" href="{% url 'contas:logout' %}">Sair</a></p>
+</section>
+{% endblock %}

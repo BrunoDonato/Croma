@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Criar conta · Croma{% endblock %}
+{% block content %}
+<section class="card">
+  <h1>Criar conta</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    <div class="field">
+      <label for="id_username">Usuário</label>
+      {{ form.username }}
+      {% for e in form.username.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <div class="field">
+      <label for="id_email">E-mail</label>
+      {{ form.email }}
+      {% for e in form.email.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <div class="field">
+      <label for="id_password1">Senha</label>
+      {{ form.password1 }}
+      {% for e in form.password1.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <div class="field">
+      <label for="id_password2">Confirmar Senha</label>
+      {{ form.password2 }}
+      {% for e in form.password2.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <button type="submit" class="btn">Cadastrar</button>
+    <p class="muted">Já tem conta? <a href="{% url 'contas:login' %}">Entrar</a></p>
+  </form>
+</section>
+{% endblock %}
