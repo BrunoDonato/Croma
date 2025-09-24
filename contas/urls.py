@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = "contas"  # <- importante para usar 'contas:login' etc.
+app_name = "contas"  # importante para usar 'contas:login' etc.
 
 urlpatterns = [
     path("registrar/", views.registrar, name="registrar"),
