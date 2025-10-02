@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Acesso negado</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
+  </header>
+  <main class="container">
+    <section class="card">
+      <h1>Acesso negado</h1>
+      <p>Você não tem permissão para acessar este recurso.</p>
+      <p class="muted"><a href="{% url 'contas:login' %}">Ir para o login</a></p>
+    </section>
+  </main>
+</body>
+</html>

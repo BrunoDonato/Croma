@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("contas/", include("contas.urls")),
+    path("", RedirectView.as_view(pattern_name="contas:login", permanent=False)),
 ]
+
+handler403 = "contas.views.error_403" # Redireciona para a view de erro de permissão (403.html)

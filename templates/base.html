@@ -6,24 +6,16 @@
   <title>{% block title %}Croma{% endblock %}</title>
 
   {% load static %}
-  <link rel="stylesheet" href="{% static 'C:\Users\bruno\Projetos\croma\static\css\auth.css' %}">
+  <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
 <body>
 
   <header class="topbar">
-    <div class="container">
-      {% if request.user.is_authenticated %}
-        <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
-        · <form method="post" action="{% url 'contas:logout' %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn-outline" style="background:none;border:none;cursor:pointer;">
-              Sair
-            </button>
-          </form>
-      {% else %}
-        <a class="brand" href="/">Croma</a>
-      {% endif %}
-    </div>
+    {% if request.user.is_authenticated %}
+      <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
+    {% else %}
+      <a class="brand" href="{% url 'contas:login' %}">Croma</a>
+    {% endif %}
   </header>
 
   <main class="container">
