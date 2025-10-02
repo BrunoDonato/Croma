@@ -5,33 +5,53 @@
   {% if request.GET.expired %}
     <div class="alert alert-warning">Sua sessão expirou. Faça login novamente.</div>
   {% endif %}
-
   {% if request.GET.denied %}
     <div class="alert alert-danger">Acesso negado: você não tem permissão para essa área.</div>
   {% endif %}
 
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li class="message {{ message.tags }}">{{ message }}</li>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger">
+      {% for e in form.non_field_errors %}
+        {{ e }}{% if not forloop.last %}<br>{% endif %}
       {% endfor %}
-    </ul>
+    </div>
   {% endif %}
 
-  <section class="card" style="max-width:420px;margin:0 auto;">
-    <h1>Entrar</h1>
+  <section class="card">
+    <h1>Entrar - Croma</h1>
     <form method="post" class="auth-form">
       {% csrf_token %}
       {% if request.GET.next %}
         <input type="hidden" name="next" value="{{ request.GET.next }}">
       {% endif %}
-      <label for="id_username">Usuário:</label>
-      <input id="id_username" name="username" type="text" required class="input">
-      <label for="id_password">Senha:</label>
-      <input id="id_password" name="password" type="password" required class="input">
-      <button type="submit" class="btn btn-primary">Entrar</button>
+
+      <div class="field">
+        <label for="id_username">Usuário</label>
+        <input id="id_username" name="username" type="text" value="{{ form.username.value|default_if_none:'' }}" required>
+        {% if form.username.errors %}
+          <div class="alert alert-danger" style="margin-top:8px;">
+            {% for e in form.username.errors %}
+              {{ e }}{% if not forloop.last %}<br>{% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="field">
+        <label for="id_password">Senha</label>
+        <input id="id_password" name="password" type="password" required>
+        {% if form.password.errors %}
+          <div class="alert alert-danger" style="margin-top:8px;">
+            {% for e in form.password.errors %}
+              {{ e }}{% if not forloop.last %}<br>{% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <button type="submit" class="btn">Entrar</button>
     </form>
-    <p class="muted" style="margin-top:8px;"><a href="{% url 'contas:registrar' %}">Criar conta</a></p>
+    <p class="muted"><a href="{% url 'contas:registrar' %}">Criar conta</a></p>
   </section>
 </main>
 {% endblock %}

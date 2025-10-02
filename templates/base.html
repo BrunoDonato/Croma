@@ -2,37 +2,34 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Croma{% endblock %}</title>
-
+  <title>Croma</title>
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
   <header class="topbar">
-    {% if request.user.is_authenticated %}
+    <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
       <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
-    {% else %}
-      <a class="brand" href="{% url 'contas:login' %}">Croma</a>
-    {% endif %}
+      {% if request.user.is_authenticated %}
+      <form action="{% url 'contas:logout' %}" method="post" style="margin:0;">
+        {% csrf_token %}
+        <button type="submit" class="btn-small">Sair</button>
+      </form>
+      {% endif %}
+    </div>
   </header>
 
   <main class="container">
     {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-          <li class="msg {{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
+      {% for message in messages %}
+        <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-warning{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
     {% endif %}
-
-    {% block content %}{% endblock %}
   </main>
 
-  <footer class="container" style="margin-top:24px;">
-    <small class="muted">© {{ now|date:"Y" }} Croma</small>
-  </footer>
-
+  {% block content %}{% endblock %}
 </body>
 </html>

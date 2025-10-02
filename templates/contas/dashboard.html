@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Dashboard · Croma{% endblock %}
 
 {% block content %}
-<section class="card">
-  <h1>Bem-vindo, {{ request.user.get_username }}</h1>
-  <p>Você está autenticado no sistema.</p>
-  <div class="actions">
-    <form method="post" action="{% url 'contas:logout' %}">
+<main class="container container--wide">
+  <section class="card">
+    <h1>Bem-vindo, {{ request.user.username }}</h1>
+    <p>Você está autenticado no sistema.</p>
+
+    <form action="{% url 'contas:logout' %}" method="post">
       {% csrf_token %}
-      <button type="submit" class="btn-outline">Sair</button>
+      <button type="submit" class="btn-small">Sair</button>
     </form>
-  </div>
-</section>
+  </section>
+</main>
 {% endblock %}

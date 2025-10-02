@@ -45,8 +45,9 @@ body {
 .card {
   background: var(--color-card-bg);
   border-radius: 14px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.08); /* Sombra */
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
   padding: 28px;
+  border-top: 4px solid var(--color-primary);
 }
 
 /* Títulos */
@@ -171,4 +172,21 @@ input:focus {
 
 .btn-small:active {
   transform: scale(0.97);
+}
+
+/* Containers maiores para páginas internas */
+.container--wide { max-width: 960px; }
+
+/* Cabeçalho/ações no topo do card (ex.: botão Sair alinhado à direita) */
+.card .top-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+/* Variação visual para áreas administrativas */
+.card--admin {
+  border-top: 4px solid var(--color-primary);
+  padding-top: 24px;
 }

@@ -1,8 +1,15 @@
 {% extends "base.html" %}
-{% block title %}Área administrativa · Croma{% endblock %}
+
 {% block content %}
-<section class="card">
-  <h1>Área administrativa</h1>
-  <p>Conteúdo reservado para administradores.</p>
-</section>
+<main class="container container--wide">
+  <section class="card card--admin">
+    <h1>Área administrativa</h1>
+    <p>Aqui vão as funcionalidades restritas para administradores.</p>
+
+    <form action="{% url 'contas:logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn-small">Sair</button>
+    </form>
+  </section>
+</main>
 {% endblock %}
