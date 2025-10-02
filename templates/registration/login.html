@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Entrar · Croma{% endblock %}
+
 {% block content %}
 <section class="card">
   <h1>Entrar</h1>
   <form method="post" novalidate>
     {% csrf_token %}
     <div class="field">
-      <label for="id_username">Usuário</label>
+      <label for="id_username">Usuário ou e-mail</label>
       {{ form.username }}
       {% for e in form.username.errors %}<small class="error">{{ e }}</small>{% endfor %}
     </div>
@@ -16,7 +17,7 @@
       {% for e in form.password.errors %}<small class="error">{{ e }}</small>{% endfor %}
     </div>
     <button type="submit" class="btn">Entrar</button>
-    <p class="muted">Novo por aqui? <a href="{% url 'contas:registrar' %}">Criar conta</a></p>
+    <p class="muted">Não tem conta? <a href="{% url 'contas:registrar' %}">Cadastre-se</a></p>
   </form>
 </section>
 {% endblock %}
