@@ -117,3 +117,58 @@ input:focus {
   font-size: 14px;
   margin-top: 10px;
 }
+
+/* Alertas (sessão expirada e acesso negado) */
+.alert {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.alert-warning {
+  background: #fff7e6;
+  border: 1px solid #ffe0a3;
+  color: #7a4d00;
+}
+
+.alert-danger {
+  background: #fff0f0;
+  border: 1px solid #ffc2c9;
+  color: #7a0020;
+}
+
+/* Formulário de autenticação */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Botão "sair" */
+.auth-form .field {
+  margin-bottom: 14px;
+}
+
+.btn-small {
+  padding: 6px 14px;
+  height: auto;
+  width: auto;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.1s;
+}
+
+.btn-small:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn-small:active {
+  transform: scale(0.97);
+}

@@ -1,23 +1,37 @@
 {% extends "base.html" %}
-{% block title %}Entrar · Croma{% endblock %}
 
 {% block content %}
-<section class="card">
-  <h1>Entrar</h1>
-  <form method="post" novalidate>
-    {% csrf_token %}
-    <div class="field">
-      <label for="id_username">Usuário ou e-mail</label>
-      {{ form.username }}
-      {% for e in form.username.errors %}<small class="error">{{ e }}</small>{% endfor %}
-    </div>
-    <div class="field">
-      <label for="id_password">Senha</label>
-      {{ form.password }}
-      {% for e in form.password.errors %}<small class="error">{{ e }}</small>{% endfor %}
-    </div>
-    <button type="submit" class="btn">Entrar</button>
-    <p class="muted">Não tem conta? <a href="{% url 'contas:registrar' %}">Cadastre-se</a></p>
-  </form>
-</section>
+<main class="container">
+  {% if request.GET.expired %}
+    <div class="alert alert-warning">Sua sessão expirou. Faça login novamente.</div>
+  {% endif %}
+
+  {% if request.GET.denied %}
+    <div class="alert alert-danger">Acesso negado: você não tem permissão para essa área.</div>
+  {% endif %}
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="message {{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <section class="card" style="max-width:420px;margin:0 auto;">
+    <h1>Entrar</h1>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+      {% endif %}
+      <label for="id_username">Usuário:</label>
+      <input id="id_username" name="username" type="text" required class="input">
+      <label for="id_password">Senha:</label>
+      <input id="id_password" name="password" type="password" required class="input">
+      <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+    <p class="muted" style="margin-top:8px;"><a href="{% url 'contas:registrar' %}">Criar conta</a></p>
+  </section>
+</main>
 {% endblock %}
