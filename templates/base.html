@@ -9,15 +9,7 @@
 </head>
 <body>
   <header class="topbar">
-    <div style="max-width:960px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
-      <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
-      {% if request.user.is_authenticated %}
-      <form action="{% url 'contas:logout' %}" method="post" style="margin:0;">
-        {% csrf_token %}
-        <button type="submit" class="btn-small">Sair</button>
-      </form>
-      {% endif %}
-    </div>
+    <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
   </header>
 
   <main class="container">

@@ -14,7 +14,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'estoque',
-    'contas',
+    'contas.apps.ContasConfig',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +80,7 @@ LOGOUT_REDIRECT_URL = "contas:login"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 10
+SESSION_COOKIE_AGE = 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 if not DEBUG:
