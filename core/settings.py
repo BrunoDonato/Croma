@@ -15,6 +15,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'estoque',
     'contas.apps.ContasConfig',
+    'viagens',
+    'ordens',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +82,7 @@ LOGOUT_REDIRECT_URL = "contas:login"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SESSION_COOKIE_AGE = 60
+SESSION_COOKIE_AGE = 100000000
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Configurações extras de segurança

@@ -11,25 +11,62 @@
   {% endif %}
 
   <section class="card">
-    <h1>Criar conta</h1>
+    <h1>Cadastrar novo Usuário</h1>
+
     <form method="post" class="auth-form">
       {% csrf_token %}
-      {% for field in form %}
-        <div class="field">
-          {{ field.label_tag }}
-          {{ field }}
-          {% if field.errors %}
-            <div class="alert alert-danger" style="margin-top:8px;">
-              {% for e in field.errors %}
-                {{ e }}{% if not forloop.last %}<br>{% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
-      {% endfor %}
+
+      <div class="field">
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {% for e in form.username.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {% for e in form.first_name.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {% for e in form.last_name.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% for e in form.email.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {% for e in form.password1.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {% for e in form.password2.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.loja.label_tag }}
+        {{ form.loja }}
+        {% for e in form.loja.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        {{ form.grupo.label_tag }}
+        {{ form.grupo }}
+        {% for e in form.grupo.errors %}<div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>{% endfor %}
+      </div>
+
       <button type="submit" class="btn">Registrar</button>
     </form>
-    <p class="muted"><a href="{% url 'contas:login' %}">Voltar ao login</a></p>
+
   </section>
 </main>
 {% endblock %}

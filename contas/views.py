@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils import timezone
 from django.contrib.auth import views as auth_views
 
@@ -43,26 +43,36 @@ class CustomLoginView(auth_views.LoginView):
         self.request.session.modified = True
         return super().form_valid(form)
 
+
+def is_admin(user):
+    return user.is_superuser or user.groups.filter(name="admin").exists()
+
+
+@login_required
+@user_passes_test(is_admin)
 def registrar(request):
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Conta criada com sucesso! Faça login.")
-            return redirect("contas:login")
+            messages.success(request, "Usuário cadastrado com sucesso.")
+            return redirect("contas:registrar")
         else:
             messages.error(request, "Corrija os erros abaixo.")
     else:
         form = RegistroForm()
     return render(request, "contas/registrar.html", {"form": form})
 
+
 @login_required(login_url="contas:login")
 def dashboard(request):
     return render(request, "contas/dashboard.html")
 
+
 @admin_required
 def admin_area(request):
     return render(request, "contas/admin_area.html")
+
 
 def error_403(request, exception=None):
     return render(request, "403.html", status=403)

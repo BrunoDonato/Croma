@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("contas/", include("contas.urls")),
     path("", RedirectView.as_view(pattern_name="contas:login", permanent=False)),
+    path("os/", include("ordens.urls", namespace="ordens")),
 ]
 
 handler403 = "contas.views.error_403" # Redireciona para a view de erro de permissão (403.html)

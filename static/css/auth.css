@@ -21,9 +21,19 @@ body {
 .topbar {
   background: var(--color-primary-dark);
   color: #fff;
-  padding: 16px 0;
-  text-align: center;
+  padding: 16px 24px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    position: relative;
+}
+
+.topbar .menu {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .topbar .brand {
@@ -32,6 +42,49 @@ body {
   text-decoration: none;
   color: #fff;
   font-size: 22px;
+}
+
+/* Nav da topbar (Cadastrar Usuário / Sair) */
+.menu {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.menu-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.menu-link:hover {
+  text-decoration: underline;
+}
+
+/* Botão Sair (form POST) */
+.logout-form {
+  display: inline;
+}
+
+.btn-logout {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.75);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.25s, border-color 0.25s, transform 0.1s;
+}
+
+.btn-logout:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: #fff;
+}
+
+.btn-logout:active {
+  transform: scale(0.98);
 }
 
 /* Container geral */
@@ -147,11 +200,7 @@ input:focus {
   flex-direction: column;
 }
 
-/* Botão "sair" */
-.auth-form .field {
-  margin-bottom: 14px;
-}
-
+/* Botões pequenos (se usados em páginas internas) */
 .btn-small {
   padding: 6px 14px;
   height: auto;
@@ -175,7 +224,9 @@ input:focus {
 }
 
 /* Containers maiores para páginas internas */
-.container--wide { max-width: 960px; }
+.container--wide {
+  max-width: 960px;
+}
 
 /* Cabeçalho/ações no topo do card (ex.: botão Sair alinhado à direita) */
 .card .top-actions {

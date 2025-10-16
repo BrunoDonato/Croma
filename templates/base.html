@@ -9,8 +9,21 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
-  </header>
+  <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
+
+  {% if user.is_authenticated %}
+  <nav class="menu">
+    {% if user.is_superuser or user.groups.all.0.name == "admin" %}
+      <a href="{% url 'contas:registrar' %}" class="menu-link">Cadastrar Usuário</a>
+    {% endif %}
+
+    <form method="post" action="{% url 'contas:logout' %}" class="logout-form">
+      {% csrf_token %}
+      <button type="submit" class="btn-logout">Sair</button>
+    </form>
+  </nav>
+  {% endif %}
+</header>
 
   <main class="container">
     {% if messages %}

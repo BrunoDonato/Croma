@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h1>Nova Ordem de Serviço</h1>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {{ form.as_p }}
+      <button type="submit" class="btn">Enviar Solicitação</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

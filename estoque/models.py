@@ -10,7 +10,6 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nome
 
-
 class Produto(models.Model):
     nome = models.CharField(max_length=150, unique=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, related_name="produtos")
@@ -52,7 +51,6 @@ class Loja(models.Model):
 
     def __str__(self):
         return self.nome
-
 
 class SaldoEstoque(models.Model):
     produto = models.ForeignKey("Produto", on_delete=models.CASCADE, related_name="saldos")

@@ -18,7 +18,7 @@
   {% endif %}
 
   <section class="card">
-    <h1>Entrar - Croma</h1>
+    <h1>Entrar</h1>
     <form method="post" class="auth-form">
       {% csrf_token %}
       {% if request.GET.next %}
@@ -51,7 +51,6 @@
 
       <button type="submit" class="btn">Entrar</button>
     </form>
-    <p class="muted"><a href="{% url 'contas:registrar' %}">Criar conta</a></p>
   </section>
 </main>
 {% endblock %}

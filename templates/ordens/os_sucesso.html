@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h1>Solicitação registrada com sucesso</h1>
+    <p>Sua Ordem de Serviço foi criada e será analisada em breve.</p>
+    <a href="{% url 'ordens:os_nova' %}" class="btn">Abrir outra OS</a>
+  </section>
+</main>
+{% endblock %}
