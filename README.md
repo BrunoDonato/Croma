@@ -118,7 +118,6 @@ static/
 ---
 
 ## 5) Testes Manuais Recomendados
-## 🧪 Testes Manuais Recomendados
 
 | **Cenário de Teste** | **Ação do Usuário** | **Resultado Esperado** |
 |-----------------------|---------------------|-------------------------|
