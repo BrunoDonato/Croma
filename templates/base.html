@@ -8,24 +8,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-  <header class="topbar">
-  <a class="brand" href="{% url 'contas:dashboard' %}">Croma</a>
 
   {% if user.is_authenticated %}
-  <nav class="menu">
-    {% if user.is_superuser or user.groups.all.0.name == "admin" %}
-      <a href="{% url 'contas:registrar' %}" class="menu-link">Cadastrar Usuário</a>
-    {% endif %}
-
-    <form method="post" action="{% url 'contas:logout' %}" class="logout-form">
-      {% csrf_token %}
-      <button type="submit" class="btn-logout">Sair</button>
-    </form>
-  </nav>
+    {% include 'partials/sidebar.html' %}
+  {% else %}
+    <header class="topbar">
+      <a class="brand" href="{% url 'contas:login' %}">CROMA</a>
+      <nav class="menu"></nav>
+    </header>
   {% endif %}
-</header>
 
-  <main class="container">
+  <main class="main-content {% if user.is_authenticated %}with-sidebar{% endif %}">
     {% if messages %}
       {% for message in messages %}
         <div class="alert {% if 'error' in message.tags %}alert-danger{% else %}alert-warning{% endif %}">
@@ -33,8 +26,8 @@
         </div>
       {% endfor %}
     {% endif %}
+    {% block content %}{% endblock %}
   </main>
 
-  {% block content %}{% endblock %}
 </body>
 </html>

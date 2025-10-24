@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h1>Nova Viagem</h1>
+
+    <form method="post" class="stack">
+      {% csrf_token %}
+
+      <div class="field">
+        <label>Referencia OS:</label>
+        {{ form.referencia_os }}
+      </div>
+
+      <div class="field">
+        <label>Origem:</label>
+        {{ form.origem }}
+      </div>
+
+      <div class="field">
+        <label>Destino:</label>
+        {{ form.destino }}
+      </div>
+
+      <div class="field">
+        <label>Responsável:</label>
+        {{ form.responsavel }}
+      </div>
+
+      <div class="field">
+        <label>Veículo:</label>
+        {{ form.veiculo }}
+      </div>
+
+      <div class="field">
+        <label>Data partida:</label>
+        {{ form.data_partida }}
+      </div>
+
+      <div class="field">
+        <label>Data retorno:</label>
+        {{ form.data_retorno }}
+      </div>
+
+      <div class="field">
+        <label>Status:</label>
+        {{ form.status }}
+      </div>
+
+      <div class="field">
+        <label>Motivo:</label>
+        {{ form.motivo }}
+      </div>
+
+      <div class="field">
+        <label>Observações:</label>
+        {{ form.observacoes }}
+      </div>
+
+      <button class="btn" type="submit">Salvar</button>
+
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          Corrija os erros acima para salvar.
+        </div>
+      {% endif %}
+    </form>
+  </section>
+</main>
+{% endblock %}

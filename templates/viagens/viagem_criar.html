@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h1>Nova Viagem</h1>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div class="field">
+          {{ field.label_tag }} {{ field }}
+          {% for e in field.errors %}
+            <div class="alert alert-danger" style="margin-top:8px;">{{ e }}</div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      <button class="btn" type="submit">Salvar</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

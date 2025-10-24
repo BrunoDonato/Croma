@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'contas.apps.ContasConfig',
     'viagens',
     'ordens',
+    'relatorios',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+# Banco de Dados
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -60,6 +62,7 @@ DATABASES = {
     }
 }
 
+# Autenticação e Login
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -67,25 +70,31 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+LOGIN_URL = "contas:login"
+LOGIN_REDIRECT_URL = "contas:dashboard"
+LOGOUT_REDIRECT_URL = "contas:login"
+
+# Localização e Horários
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
+# Arquivos estáticos e mídias
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-LOGIN_URL = "contas:login"
-LOGIN_REDIRECT_URL = "contas:dashboard"
-LOGOUT_REDIRECT_URL = "contas:login"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# Configurações de sessão
 SESSION_COOKIE_AGE = 100000000
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-# Configurações extras de segurança
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Segurança
 if not DEBUG:
     STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
     SESSION_COOKIE_SECURE = True

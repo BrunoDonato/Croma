@@ -1,0 +1,80 @@
+<aside class="sidebar">
+  <h2 class="brand">CROMA</h2>
+
+  {% if user.is_authenticated %}
+  {% with app=request.resolver_match.app_name name=request.resolver_match.url_name %}
+  <nav class="menu">
+
+    <!-- Principal -->
+    <div class="menu-section">
+      <p class="menu-title">PRINCIPAL</p>
+
+      {% if user.is_superuser or user.groups.all.0.name == "admin" %}
+        <!-- Admin -->
+        <a href="{% url 'contas:dashboard' %}"
+           class="menu-link {% if app == 'contas' and name == 'dashboard' %}is-active{% endif %}">
+          Dashboard
+        </a>
+
+        <a href="{% url 'ordens:os_listar' %}"
+           class="menu-link {% if app == 'ordens' and name in 'os_listar,os_detalhe' %}is-active{% endif %}">
+          Ordens de Serviço
+        </a>
+
+        <a href="{% url 'ordens:os_nova' %}"
+           class="menu-link {% if app == 'ordens' and name == 'os_nova' %}is-active{% endif %}">
+          Nova O.S.
+        </a>
+      {% else %}
+        <!-- Usuario comum -->
+        <a href="{% url 'ordens:os_nova' %}"
+           class="menu-link {% if app == 'ordens' and name == 'os_nova' %}is-active{% endif %}">
+          Nova OS
+        </a>
+        <a href="{% url 'ordens:os_minhas' %}"
+           class="menu-link {% if app == 'ordens' and name in 'os_minhas,os_detalhe' %}is-active{% endif %}">
+          Minhas OS
+        </a>
+      {% endif %}
+    </div>
+
+    {% if user.is_superuser or user.groups.all.0.name == "admin" %}
+    <!-- Cadastros -->
+    <div class="menu-section">
+      <p class="menu-title">CADASTROS</p>
+
+      <a href="{% url 'viagens:nova' %}"
+         class="menu-link {% if app == 'viagens' and name in 'nova,detalhe' %}is-active{% endif %}">
+        Viagens
+      </a>
+
+      <a href="{% url 'relatorios:viagens' %}"
+         class="menu-link {% if app == 'relatorios' %}is-active{% endif %}">
+        Relatórios
+      </a>
+
+      <a href="{% url 'contas:registrar' %}"
+         class="menu-link {% if app == 'contas' and name == 'registrar' %}is-active{% endif %}">
+        Cadastrar Usuário
+      </a>
+    </div>
+
+    <!-- Sistema -->
+    <div class="menu-section">
+      <p class="menu-title">SISTEMA</p>
+      <a href="#" class="menu-link">Ajustes</a>
+    </div>
+    {% endif %}
+
+    <!-- Sair -->
+    <div class="menu-section">
+      <form method="post" action="{% url 'contas:logout' %}" class="logout-form">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Sair</button>
+      </form>
+    </div>
+
+  </nav>
+  {% endwith %}
+  {% endif %}
+</aside>

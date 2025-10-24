@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h1>Viagem #{{ v.id }}</h1>
+    <p><strong>OS:</strong> {{ v.referencia_os }}</p>
+    <p><strong>Origem:</strong> {{ v.origem }}</p>
+    <p><strong>Destino:</strong> {{ v.destino }}</p>
+    <p><strong>Responsável:</strong> {{ v.responsavel }}</p>
+    <p><strong>Saída:</strong> {{ v.data_partida }}</p>
+    <p><strong>Retorno:</strong> {{ v.data_retorno|default:"—" }}</p>
+    <p><strong>Status:</strong> {{ v.status }}</p
+    <p><strong>Motivo:</strong> {{ v.motivo|default:"—" }}</p>
+    <p><strong>Obs.:</strong> {{ v.observacoes|default:"—" }}</p>
+  </section>
+</main>
+{% endblock %}

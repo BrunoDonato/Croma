@@ -17,8 +17,8 @@ class MinimoCentralFilter(admin.SimpleListFilter):
             ("zerado_central", "Central zerado"),
         ]
 
+    # Anota o saldo do CENTRAL por produto
     def queryset(self, request, queryset):
-        # Anota o SALDO DO CENTRAL por produto
         qs = queryset.annotate(
             saldo_central=Coalesce(
                 Sum("saldos__quantidade", filter=Q(saldos__loja__is_central=True)),
@@ -35,13 +35,8 @@ class MinimoCentralFilter(admin.SimpleListFilter):
         return qs
 
 
-# ---------- INLINES ----------
-
+# Inlines
 class SaldoComSaldoInline(admin.TabularInline):
-    """
-    Inline usado na tela da Loja: mostra apenas os saldos com quantidade > 0.
-    Assim, ao abrir a loja, você enxerga só o que está guardado nela.
-    """
     model = SaldoEstoque
     extra = 0
     fields = ("produto", "quantidade")
@@ -53,17 +48,13 @@ class SaldoComSaldoInline(admin.TabularInline):
 
 
 class SaldoInline(admin.TabularInline):
-    """
-    Inline usado na tela do Produto.
-    Aqui aparecem todos os saldos (podem incluir 0).
-    """
     model = SaldoEstoque
     extra = 1
     min_num = 0
     autocomplete_fields = ("loja",)
 
 
-# ---------- ADMINS ----------
+# Admins
 
 @admin.register(Loja)
 class LojaAdmin(admin.ModelAdmin):

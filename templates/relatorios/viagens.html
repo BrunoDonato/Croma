@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container--wide">
+  <section class="card card--admin">
+    <h1>Relatórios de Viagens</h1>
+
+    <h3>Lojas que mais receberam visitas</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Loja</th><th>Qtd. de Viagens</th></tr>
+      </thead>
+      <tbody>
+        {% for r in viagens_por_loja %}
+          <tr><td>{{ r.nome }}</td><td>{{ r.qtd }}</td></tr>
+        {% empty %}
+          <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h3>Viagens por mês</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Mês</th><th>Qtd. de Viagens</th></tr>
+      </thead>
+      <tbody>
+        {% for r in viagens_por_mes %}
+          <tr><td>{{ r.mes|date:"m/Y" }}</td><td>{{ r.qtd }}</td></tr>
+        {% empty %}
+          <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

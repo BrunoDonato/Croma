@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container--wide">
+  <section class="card card--admin">
+    <h1>{{ page_title|default:"Ordens de Serviço" }}</h1>
+    <p class="muted">
+      {{ page_subtitle|default:"Visualize todas as OS registradas pelos usuários das lojas." }}
+    </p>
+
+    <table class="table">
+      <thead>
+  <tr>
+    <th>ID</th>
+    <th>Loja</th>
+    {% if not is_my_list %}<th>Solicitante</th>{% endif %}
+    {% if not is_my_list %}<th>Responsável</th>{% endif %}  {# novo #}
+    <th>Status</th>
+    <th>Data de Abertura</th>
+    <th>Data de Fechamento</th>
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  {% for os in ordens %}
+    <tr>
+      <td>{{ os.id }}</td>
+      <td>{{ os.loja }}</td>
+      {% if not is_my_list %}<td>{{ os.solicitante.username }}</td>{% endif %}
+      {% if not is_my_list %}<td>{{ os.tecnico_responsavel.username|default:"—" }}</td>{% endif %}
+      <td>{{ os.status }}</td>
+      <td>{{ os.data_abertura|date:"d/m/Y H:i" }}</td>
+      <td>{% if os.data_fechamento %}{{ os.data_fechamento|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+      <td><a href="{% url 'ordens:os_detalhe' os.id %}" class="btn-small">Ver detalhes</a></td>
+    </tr>
+  {% empty %}
+    <tr>
+      <td colspan="{% if is_my_list %}6{% else %}8{% endif %}">
+        Nenhuma Ordem de Serviço encontrada.
+      </td>
+    </tr>
+  {% endfor %}
+</tbody>
+
+    </table>
+  </section>
+</main>
+{% endblock %}
