@@ -6,40 +6,48 @@
 - Navegador moderno (Chrome, Edge, Firefox)
 
 > 💡 Por padrão, o projeto utiliza **SQLite** (não exige instalação de banco).  
-> Também há suporte fácil para **PostgreSQL** — basta ajustar o `settings.py`.
+> Também há suporte fácil para **PostgreSQL**, basta ajustar o `settings.py`.
 
 ---
 
 ## 2) Passo a passo (Quickstart – SQLite)
 
 ### Clonar o repositório
-```bash
-git clone https://github.com/BrunoDonato/Croma.git
-cd Croma
-```
---- 
+> git clone https://github.com/BrunoDonato/Croma.git  
+  cd Croma
 
-### Criar e ativar ambiente virtual
+### Criar e ativar o ambiente virtual
 > python -m venv .venv
+
 ### Windows
 > .\.venv\Scripts\activate
+
 ### macOS/Linux
 > source .venv/bin/activate
 
-
-### Instalar Dependências
+### Instalar dependências
 > pip install -r requirements.txt
 
-### Aplicar migrações e criar dados de demonstração
+### Aplicar migrações (usa settings_demo com SQLite)
 > python manage.py migrate --settings=core.settings_demo
-> python manage.py seed_demo --settings=core.settings_demo 
 
-###  Executar o servidor
+### Popular dados de demonstração (grupos e usuários)
+> python manage.py seed_demo --settings=core.settings_demo
+
+### Executar o servidor
 > python manage.py runserver --settings=core.settings_demo
 
-### Acessar o sistema
+### Acessar
 > http://127.0.0.1:8000/contas/login/
 
+### Credenciais de teste (criados pelo seed_demo):
+
+>   Admin: admin / senha: 123456  
+    Usuário comum: teste / senha: 123456  
+    Observações rápidas:  
+    Não precisa criar banco manualmente: o SQLite é criado automaticamente no primeiro migrate.  
+    Se quiser criar um admin próprio: python manage.py createsuperuser --settings=core.settings_demo.  
+    Painel do Django Admin (opcional): http://127.0.0.1:8000/admin/.
 ---
 
 ## 3) Principais Funcionalidades
@@ -118,7 +126,6 @@ static/
 ---
 
 ## 5) Testes Manuais Recomendados
-## 🧪 Testes Manuais Recomendados
 
 | **Cenário de Teste** | **Ação do Usuário** | **Resultado Esperado** |
 |-----------------------|---------------------|-------------------------|
