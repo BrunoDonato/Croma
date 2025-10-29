@@ -8,11 +8,15 @@ from django.urls import reverse
 from .forms import RegistroForm, LoginForm
 from .decorators import admin_required
 
+from datetime import timedelta
+from django.db.models import Count
+from ordens.models import OrdemServico, AndamentoOS
+from viagens.models import Viagem
+
 
 # Checa se é admin
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name="admin").exists()
-
 
 # Tela de Login personalizada
 class CustomLoginView(auth_views.LoginView):
@@ -63,7 +67,79 @@ class CustomLoginView(auth_views.LoginView):
 def dashboard(request):
     if not is_admin(request.user):
         return redirect("ordens:os_nova")
-    return render(request, "contas/dashboard.html")
+
+    # KPIs e listas do dashboard
+    agora = timezone.now()
+    inicio_mes = agora.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    kpi_abertas = OrdemServico.objects.filter(status="ABERTA").count()
+    kpi_execucao = OrdemServico.objects.filter(status="EM_EXECUCAO").count()
+    kpi_finalizadas_mes = OrdemServico.objects.filter(
+        status="FINALIZADA",
+        data_fechamento__gte=inicio_mes
+    ).count()
+    kpi_atrasadas = OrdemServico.objects.filter(
+        status__in=["ABERTA", "EM_ANALISE", "EM_EXECUCAO"],
+        data_abertura__lt=agora - timedelta(days=3)
+    ).count()
+
+    sem_tecnico = (
+        OrdemServico.objects
+        .filter(tecnico_responsavel__isnull=True)
+        .select_related("loja", "solicitante")
+        .order_by("-data_abertura")[:10]
+    )
+    analise_atraso = (
+        OrdemServico.objects
+        .filter(status="EM_ANALISE", data_abertura__lt=agora - timedelta(days=3))
+        .select_related("loja", "solicitante", "tecnico_responsavel")
+        .order_by("data_abertura")[:10]
+    )
+    viagens_proximas = (
+        Viagem.objects
+        .filter(
+            data_partida__date__gte=agora.date(),
+            data_partida__date__lte=(agora + timedelta(days=1)).date()
+        )
+        .select_related("origem", "destino", "responsavel")
+        .order_by("data_partida")[:10]
+    )
+
+    dist_status_qs = (
+        OrdemServico.objects
+        .values("status")
+        .annotate(total=Count("id"))
+        .order_by()
+    )
+    STATUS_LABELS = {
+        "ABERTA": "Aberta",
+        "EM_ANALISE": "Em análise",
+        "EM_EXECUCAO": "Em execução",
+        "FINALIZADA": "Finalizada",
+        "CANCELADA": "Cancelada",
+    }
+    chart_labels = [STATUS_LABELS.get(item["status"], item["status"]) for item in dist_status_qs]
+    chart_values = [item["total"] for item in dist_status_qs]
+
+    atividade = (
+        AndamentoOS.objects
+        .select_related("os", "autor")
+        .order_by("-criado_em")[:10]
+    )
+
+    context = {
+        "kpi_abertas": kpi_abertas,
+        "kpi_execucao": kpi_execucao,
+        "kpi_finalizadas_mes": kpi_finalizadas_mes,
+        "kpi_atrasadas": kpi_atrasadas,
+        "sem_tecnico": sem_tecnico,
+        "analise_atraso": analise_atraso,
+        "viagens_proximas": viagens_proximas,
+        "chart_labels": chart_labels,
+        "chart_values": chart_values,
+        "atividade": atividade,
+    }
+    return render(request, "contas/dashboard.html", context)
 
 
 # Cadastro de usuário (apenas admin)

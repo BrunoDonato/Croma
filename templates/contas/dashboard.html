@@ -1,14 +1,123 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<main class="container">
-  <section class="card">
-    <h1>Dashboard</h1>
-    <p>Bem-vindo, {{ request.user.username }}!</p>
-    <form action="{% url 'contas:logout' %}" method="post" style="margin-top:12px;">
-      {% csrf_token %}
-      <button type="submit" class="btn-small">Sair</button>
-    </form>
+<main class="main-content with-sidebar">
+  <section class="dash-grid">
+    <!-- KPIs -->
+    <div class="kpi-card">
+      <div class="kpi-title">OS Abertas</div>
+      <div class="kpi-value">{{ kpi_abertas }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Em Execução</div>
+      <div class="kpi-value">{{ kpi_execucao }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Finalizadas no mês</div>
+      <div class="kpi-value">{{ kpi_finalizadas_mes }}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-title">Em atraso (3+ dias)</div>
+      <div class="kpi-value">{{ kpi_atrasadas }}</div>
+    </div>
+
+    <!-- Donut -->
+    <section class="card dash-span-2">
+      <h2>Distribuição por Status</h2>
+      <canvas id="chartStatus" width="280" height="100"></canvas>
+    </section>
+
+    <!-- Pendências -->
+    <section class="card">
+      <h2>Pendências</h2>
+
+      <h3 class="mt-1">Sem técnico responsável</h3>
+      <ul class="list">
+        {% for os in sem_tecnico %}
+          <li>
+            <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
+            <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
+          </li>
+        {% empty %}
+          <li class="muted">Nenhuma OS pendente de atribuição.</li>
+        {% endfor %}
+      </ul>
+
+      <h3 class="mt-2">Em análise (atrasadas)</h3>
+      <ul class="list">
+        {% for os in analise_atraso %}
+          <li>
+            <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
+            <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
+          </li>
+        {% empty %}
+          <li class="muted">Nenhuma OS atrasada em análise.</li>
+        {% endfor %}
+      </ul>
+
+      <h3 class="mt-2">Viagens (hoje/amanhã)</h3>
+      <ul class="list">
+        {% for v in viagens_proximas %}
+          <li>
+            {{ v.origem }} → {{ v.destino }}
+            <span class="muted"> • {{ v.data_partida|date:"d/m/Y H:i" }}</span>
+          </li>
+        {% empty %}
+          <li class="muted">Sem viagens próximas.</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- Atividade -->
+    <section class="card">
+      <h2>Atividade recente</h2>
+      <ul class="timeline">
+        {% for a in atividade %}
+          <li class="tl-item">
+            <div class="tl-meta">
+              <strong>{{ a.autor.username }}</strong>
+              <span>{{ a.criado_em|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="muted">OS #{{ a.os.id }}</div>
+            <div>{{ a.texto|default:"(sem texto)" }}</div>
+          </li>
+        {% empty %}
+          <li class="muted">Nenhuma atividade recente.</li>
+        {% endfor %}
+      </ul>
+    </section>
   </section>
 </main>
+
+<!-- Chart.js (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{# Dados do gráfico de forma segura #}
+{{ chart_labels|json_script:"chart-labels" }}
+{{ chart_values|json_script:"chart-values" }}
+
+<script>
+  (function () {
+    const labels = JSON.parse(document.getElementById('chart-labels').textContent)
+    const values = JSON.parse(document.getElementById('chart-values').textContent)
+
+    const ctx = document.getElementById('chartStatus').getContext('2d')
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: values }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: false }
+        },
+        cutout: '60%'
+      }
+    })
+  })()
+</script>
 {% endblock %}

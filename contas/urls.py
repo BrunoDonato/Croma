@@ -22,8 +22,6 @@ urlpatterns = [
     ),
 
     path("dashboard/", views.dashboard, name="dashboard"),
-
     path("registrar/", views.registrar, name="registrar"),
-
     path("admin-area/", views.admin_area, name="admin_area"),
 ]
