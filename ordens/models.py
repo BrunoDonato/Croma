@@ -5,6 +5,19 @@ from django.utils import timezone
 User = get_user_model()
 
 
+class CategoriaProblema(models.Model):
+    nome = models.CharField(max_length=80, unique=True)
+    ativo = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Categoria de Problema"
+        verbose_name_plural = "Categorias de Problema"
+        ordering = ("nome",)
+
+    def __str__(self):
+        return self.nome
+
+
 class OrdemServico(models.Model):
     PRIORIDADE_CHOICES = (
         ("BAIXA", "Baixa"),
@@ -31,6 +44,16 @@ class OrdemServico(models.Model):
         related_name="ordens_solicitadas"
     )
     descricao_problema = models.TextField()
+
+    # categoria do problema (definida pelo admin)
+    categoria = models.ForeignKey(
+        "ordens.CategoriaProblema",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="ordens"
+    )
+
     prioridade = models.CharField(
         max_length=10,
         choices=PRIORIDADE_CHOICES,

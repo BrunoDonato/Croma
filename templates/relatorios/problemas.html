@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main class="main-content with-sidebar">
+
+  <!-- Filtros -->
+  <section class="card">
+    <h1>Relatório de Problemas (Categorias)</h1>
+
+    <form method="get" class="filters" style="display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:12px;align-items:end;">
+      <div class="field">
+        <label for="loja">Loja</label>
+        <select name="loja" id="loja">
+          <option value="">Todas</option>
+          {% for l in lojas %}
+            <option value="{{ l.id }}" {% if request.GET.loja == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="dt_ini">De</label>
+        <input type="date" id="dt_ini" name="dt_ini" value="{{ request.GET.dt_ini|default:'' }}">
+      </div>
+
+      <div class="field">
+        <label for="dt_fim">Até</label>
+        <input type="date" id="dt_fim" name="dt_fim" value="{{ request.GET.dt_fim|default:'' }}">
+      </div>
+
+      <div class="field" style="display:flex;gap:8px;">
+        <button type="submit" class="btn-small">Aplicar</button>
+        <a class="btn-small" href="{% url 'relatorios:problemas' %}">Limpar</a>
+        <a class="btn-small" href="{% url 'relatorios:os_csv' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}">Exportar CSV</a>
+
+      </div>
+    </form>
+  </section>
+
+  <!-- Tabela -->
+  <section class="card">
+    <h2>Resultado</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Loja</th>
+          <th>Solicitante</th>
+          <th>Categoria</th>
+          <th>Status</th>
+          <th>Prioridade</th>
+          <th>Abertura</th>
+          <th>Fechamento</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for os in ordens %}
+          <tr>
+            <td><a href="{% url 'ordens:os_detalhe' os.id %}">#{{ os.id }}</a></td>
+            <td>{{ os.loja }}</td>
+            <td>{{ os.solicitante.username }}</td>
+            <td>{% if os.categoria %}{{ os.categoria.nome }}{% else %}—{% endif %}</td>
+            <td>{{ os.get_status_display }}</td>
+            <td>{{ os.get_prioridade_display }}</td>
+            <td>{{ os.data_abertura|date:"d/m/Y H:i" }}</td>
+            <td>{% if os.data_fechamento %}{{ os.data_fechamento|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="8" class="muted">Nenhum registro encontrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Gráficos -->
+  <section class="card">
+    <h2>Visão rápida</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <h3 class="mt-1">Quantidade de Problemas por Categoria</h3>
+        <canvas id="chartCat" height="160"></canvas>
+      </div>
+      <div>
+        <h3 class="mt-1">MTTR por categoria (h)</h3>
+        <canvas id="chartMttr" height="160"></canvas>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ cat_labels|json_script:"cat-labels" }}
+{{ cat_values|json_script:"cat-values" }}
+{{ mttr_labels|json_script:"mttr-labels" }}
+{{ mttr_values|json_script:"mttr-values" }}
+
+<script>
+(function () {
+  const catLabels = JSON.parse(document.getElementById('cat-labels').textContent || '[]');
+  const catValues = JSON.parse(document.getElementById('cat-values').textContent || '[]');
+  const mttrLabels = JSON.parse(document.getElementById('mttr-labels').textContent || '[]');
+  const mttrValues = JSON.parse(document.getElementById('mttr-values').textContent || '[]');
+
+  const c1 = document.getElementById('chartCat');
+  if (c1) {
+    new Chart(c1, {
+      type: 'bar',
+      data: { labels: catLabels, datasets: [{ data: catValues, label: 'OS' }] },
+      options: {
+        plugins: { legend: { display: false } },
+        responsive: true,
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+
+  const c2 = document.getElementById('chartMttr');
+  if (c2) {
+    new Chart(c2, {
+      type: 'bar',
+      data: { labels: mttrLabels, datasets: [{ data: mttrValues, label: 'Horas' }] },
+      options: {
+        plugins: { legend: { display: false } },
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+})();
+</script>
+{% endblock %}

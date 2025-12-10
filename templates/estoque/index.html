@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="container--wide">
+  <section class="card">
+    <h1>Relatórios de Estoque</h1>
+    <p class="muted">
+      Aqui você pode acompanhar os produtos, filtrar,
+      e realizar exportações.
+    </p>
+
+    <!-- KPIs -->
+    <div class="dash-grid" style="grid-template-columns:repeat(5,minmax(160px,1fr));gap:12px;">
+      <div class="kpi-card">
+        <div class="kpi-title">Itens cadastrados</div>
+        <div class="kpi-value">{{ kpi_itens|default:"—" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Abaixo do mínimo (Central)</div>
+        <div class="kpi-value">{{ kpi_abaixo_min|default:"—" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Central zerado</div>
+        <div class="kpi-value">{{ kpi_central_zerado|default:"—" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Itens ativos</div>
+        <div class="kpi-value">{{ kpi_ativos|default:"—" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Total (todas as lojas)</div>
+        <div class="kpi-value">{{ kpi_total_geral|default:"—" }}</div>
+      </div>
+    </div>
+
+    <!-- Ações -->
+    <div class="mt-2" style="display:flex;gap:8px;flex-wrap:wrap;">
+      <!-- Novo produto abre o admin em nova aba -->
+      <a class="btn-small" href="{% url 'admin:estoque_produto_add' %}" target="_blank">
+        Novo Produto
+      </a>
+
+      <!-- Nova movimentação -->
+      <a class="btn-small" href="{% url 'estoque:movimentar' %}">Nova Movimentação</a>
+
+      <!-- Exportar CSV respeitando os filtros atuais -->
+      <a class="btn-small"
+         href="{% url 'estoque:exportar_csv' %}?{{ request.GET.urlencode }}">
+        Exportar CSV
+      </a>
+    </div>
+  </section>
+
+  <!-- Filtros e Tabela -->
+  <section class="card mt-2">
+    <h2>Produtos em estoque</h2>
+
+    <!-- Filtros -->
+    <form method="get" class="filters"
+          style="display:grid;grid-template-columns:repeat(4,minmax(200px,1fr));gap:12px;align-items:end;">
+      <div class="field">
+        <label for="categoria">Categoria</label>
+        <select name="categoria" id="categoria">
+          <option value="">Todas</option>
+          {% for c in categorias %}
+            <option value="{{ c.id }}"
+              {% if filtro_categoria|default_if_none:'' == c.id|stringformat:"s" %}selected{% endif %}>
+              {{ c.nome }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="ativo">Ativo</label>
+        <select name="ativo" id="ativo">
+          <option value="">Todos</option>
+          <option value="sim" {% if filtro_ativo == "sim" %}selected{% endif %}>Sim</option>
+          <option value="nao" {% if filtro_ativo == "nao" %}selected{% endif %}>Não</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="situacao_central">Situação no Central</label>
+        <select name="situacao_central" id="situacao_central">
+          <option value="">Todas</option>
+          <option value="abaixo" {% if filtro_situacao == "abaixo" %}selected{% endif %}>
+            Abaixo do mínimo
+          </option>
+          <option value="ok" {% if filtro_situacao == "ok" %}selected{% endif %}>
+            Dentro do mínimo
+          </option>
+          <option value="zerado" {% if filtro_situacao == "zerado" %}selected{% endif %}>
+            Central zerado
+          </option>
+        </select>
+      </div>
+
+      <div class="field" style="display:flex;gap:8px;justify-content:flex-end;">
+        <button type="submit" class="btn-small">Aplicar</button>
+        <a href="{% url 'estoque:home' %}" class="btn-small">Limpar</a>
+      </div>
+    </form>
+
+    <!-- Tabela -->
+    <table class="table mt-2">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Categoria</th>
+          <th>Unidade</th>
+          <th>Saldo no Central</th>
+          <th>Saldo mínimo (Central)</th>
+          <th>Total (todas as lojas)</th>
+          <th>Fabricante</th>
+          <th>Modelo</th>
+          <th>Ativo</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in produtos %}
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.categoria|default:"—" }}</td>
+            <td>{{ p.unidade|default:"un" }}</td>
+
+            <!-- Saldo no Central mostra 0 se estiver zerado, vermelho se estiver abaixo do mínimo -->
+            <td>
+              {% if p.saldo_central < p.estoque_minimo %}
+                <span style="color:#d9534f;font-weight:bold;">
+                  {{ p.saldo_central }}
+                </span>
+              {% else %}
+                {{ p.saldo_central }}
+              {% endif %}
+            </td>
+
+            <td>{{ p.estoque_minimo }}</td>
+
+            <td>{{ p.total_geral }}</td>
+
+            <td>{{ p.fabricante|default:"—" }}</td>
+            <td>{{ p.modelo|default:"—" }}</td>
+
+            <td>
+              {% if p.ativo %}
+                <span class="tag tag--success">Sim</span>
+              {% else %}
+                <span class="tag tag--muted">Não</span>
+              {% endif %}
+            </td>
+
+            <td>
+              <a href="{% url 'admin:estoque_produto_change' p.id %}"
+                 target="_blank"
+                 class="btn-small">
+                Admin
+              </a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="11" class="muted">Nenhum produto encontrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

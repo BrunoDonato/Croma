@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from django.contrib.auth import get_user_model
-from .models import OrdemServico, AndamentoOS, AnexoOS
+from .models import OrdemServico, AndamentoOS, AnexoOS, CategoriaProblema  # <-- adicionado CategoriaProblema
 
 User = get_user_model()
 
@@ -37,6 +37,15 @@ class TecnicoAdminsFilter(admin.SimpleListFilter):
         return queryset
 
 
+# Novo: categoria de problema
+@admin.register(CategoriaProblema)
+class CategoriaProblemaAdmin(admin.ModelAdmin):
+    list_display = ("nome", "ativo")
+    list_filter = ("ativo",)
+    search_fields = ("nome",)
+    ordering = ("nome",)
+
+
 @admin.register(OrdemServico)
 class OrdemServicoAdmin(admin.ModelAdmin):
     list_display = (
@@ -46,11 +55,20 @@ class OrdemServicoAdmin(admin.ModelAdmin):
         "tecnico_responsavel",
         "prioridade",
         "status",
+        "categoria",  # <-- exibe a categoria no admin
         "data_abertura",
         "data_fechamento",
     )
     list_display_links = ("id", "loja")
-    list_filter = ("status", "loja", "prioridade", TecnicoAdminsFilter, "data_abertura", "data_fechamento")
+    list_filter = (
+        "status",
+        "loja",
+        "prioridade",
+        "categoria",  # <-- filtro lateral por categoria
+        TecnicoAdminsFilter,
+        "data_abertura",
+        "data_fechamento",
+    )
     search_fields = ("solicitante__username", "loja__nome", "descricao_problema")
     date_hierarchy = "data_abertura"
     ordering = ("-data_abertura",)
@@ -83,7 +101,7 @@ class OrdemServicoAdmin(admin.ModelAdmin):
             try:
                 os.mudar_status(novo_status, autor=request.user, texto_andamento=texto, visibilidade="INTERNO")
                 sucesso += 1
-            except Exception as e:
+            except Exception:
                 falha += 1
         if sucesso:
             messages.success(request, _(f"{sucesso} OS(s) marcadas como {novo_status}."))
@@ -111,4 +129,7 @@ class OrdemServicoAdmin(admin.ModelAdmin):
             kwargs["queryset"] = User.objects.filter(
                 Q(is_superuser=True) | Q(groups__name="admin")
             ).distinct().order_by("username")
+        if db_field.name == "categoria":  # <-- restringe categorias ativas
+            from .models import CategoriaProblema
+            kwargs["queryset"] = CategoriaProblema.objects.filter(ativo=True).order_by("nome")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)

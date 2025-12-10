@@ -36,6 +36,7 @@ urlpatterns = [
     path("viagens/", include(("viagens.urls", "viagens"), namespace="viagens")),
     path("relatorios/", include(("relatorios.urls", "relatorios"), namespace="relatorios")),
     path("", home_router, name="home"),
+    path("estoque/", include(("estoque.urls", "estoque"), namespace="estoque")),
 ]
 
 if settings.DEBUG:

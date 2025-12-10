@@ -115,5 +115,10 @@ class CategoriaAdmin(admin.ModelAdmin):
 class SaldoEstoqueAdmin(admin.ModelAdmin):
     list_display = ("produto", "loja", "quantidade")
     list_filter = ("loja", "produto__categoria")
-    search_fields = ("produto__nome", "produto__modelo", "produto__fabricante", "loja__nome")
+    search_fields = (
+        "produto__nome",
+        "produto__modelo",
+        "produto__fabricante",
+        "loja__nome",
+    )
     autocomplete_fields = ("produto", "loja")

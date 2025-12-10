@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-<main class="main-content with-sidebar">
+<main class="mcontainer--wide">
   <section class="dash-grid">
     <!-- KPIs -->
     <div class="kpi-card">
@@ -21,10 +21,16 @@
       <div class="kpi-title">Em atraso (3+ dias)</div>
       <div class="kpi-value">{{ kpi_atrasadas }}</div>
     </div>
+    <div class="kpi-card">
+        <div class="kpi-title">MTTR (mês)</div>
+        <div class="kpi-value">
+            {% if mttr_horas %}{{ mttr_horas }}h{% else %}—{% endif %}
+        </div>
+    </div>
 
     <!-- Donut -->
     <section class="card dash-span-2">
-      <h2>Distribuição por Status</h2>
+      <h2>Distribuição por Status OS</h2>
       <canvas id="chartStatus" width="280" height="100"></canvas>
     </section>
 
@@ -32,7 +38,7 @@
     <section class="card">
       <h2>Pendências</h2>
 
-      <h3 class="mt-1">Sem técnico responsável</h3>
+      <h3 class="mt-1">OS Sem técnico responsável</h3>
       <ul class="list">
         {% for os in sem_tecnico %}
           <li>
@@ -44,7 +50,7 @@
         {% endfor %}
       </ul>
 
-      <h3 class="mt-2">Em análise (atrasadas)</h3>
+      <h3 class="mt-2">OS Em análise (atrasadas)</h3>
       <ul class="list">
         {% for os in analise_atraso %}
           <li>
@@ -97,8 +103,10 @@
 {{ chart_labels|json_script:"chart-labels" }}
 {{ chart_values|json_script:"chart-values" }}
 
+
 <script>
   (function () {
+    // Donut
     const labels = JSON.parse(document.getElementById('chart-labels').textContent)
     const values = JSON.parse(document.getElementById('chart-values').textContent)
 

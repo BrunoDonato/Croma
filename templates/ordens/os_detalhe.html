@@ -17,6 +17,7 @@
 
     <div class="os-summary">
       <p><strong>Descrição do Problema:</strong> {{ os.descricao_texto|default:"—" }}</p>
+      <p><strong>Categoria do Problema:</strong> {{ os.categoria.nome|default:"—" }}</p>
       <p><strong>Loja:</strong> {{ os.loja }}</p>
       <p><strong>Solicitante:</strong> {{ os.solicitante.username }}</p>
       <p><strong>Status:</strong> {{ os.get_status_display|default:os.status }}</p>

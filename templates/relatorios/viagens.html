@@ -1,37 +1,161 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <main class="container--wide">
   <section class="card card--admin">
     <h1>Relatórios de Viagens</h1>
 
-    <h3>Lojas que mais receberam visitas</h3>
-    <table class="table">
+    {# KPIs simples #}
+    {% if total_viagens or dist_status %}
+    <div class="kpi-row" style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:12px;margin-bottom:16px;">
+      {% if total_viagens is not None %}
+      <div class="kpi-card"><div class="kpi-title">Total de Viagens</div><div class="kpi-value">{{ total_viagens }}</div></div>
+      {% endif %}
+      {% for s in dist_status %}
+      <div class="kpi-card">
+        <div class="kpi-title">{{ s.status|default:"—" }}</div>
+        <div class="kpi-value">{{ s.qtd }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {# Gráficos #}
+    {% if viagens_por_loja or viagens_por_mes %}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;">
+      {% if viagens_por_loja %}
+      <section class="card">
+        <h2>Lojas que mais receberam visitas</h2>
+        <canvas id="chartTopLojas" height="140"></canvas>
+
+          <table class="table">
       <thead>
-        <tr><th>Loja</th><th>Qtd. de Viagens</th></tr>
+        <tr><th>Loja</th><th style="width:160px;text-align:right;">Qtd. de Viagens</th></tr>
       </thead>
       <tbody>
         {% for r in viagens_por_loja %}
-          <tr><td>{{ r.nome }}</td><td>{{ r.qtd }}</td></tr>
+          <tr>
+            <td>{{ r.nome }}</td>
+            <td style="text-align:right;">{{ r.qtd }}</td>
+          </tr>
         {% empty %}
           <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
         {% endfor %}
       </tbody>
     </table>
+      </section>
+      {% endif %}
 
-    <h3>Viagens por mês</h3>
-    <table class="table">
+      {% if viagens_por_mes %}
+      <section class="card">
+        <h2>Viagens por mês</h2>
+        <canvas id="chartMes" height="140"></canvas>
+          <table class="table">
       <thead>
-        <tr><th>Mês</th><th>Qtd. de Viagens</th></tr>
+        <tr><th>Mês</th><th style="width:160px;text-align:right;">Qtd. de Viagens</th></tr>
       </thead>
       <tbody>
         {% for r in viagens_por_mes %}
-          <tr><td>{{ r.mes|date:"m/Y" }}</td><td>{{ r.qtd }}</td></tr>
+          <tr>
+            <td>{{ r.mes|date:"m/Y" }}</td>
+            <td style="text-align:right;">{{ r.qtd }}</td>
+          </tr>
         {% empty %}
           <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
         {% endfor %}
       </tbody>
     </table>
+      </section>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {# Tabela de viagens #}
+    {% if viagens %}
+    <h3 style="margin-top:24px;">Viagens (últimas)</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width:72px;">ID</th>
+          <th>Origem</th>
+          <th>Destino</th>
+          <th>Responsável</th>
+          <th>Data Partida</th>
+          <th>Data Retorno</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for v in viagens %}
+        <tr>
+          <td>{{ v.id }}</td>
+          <td>{{ v.origem }}</td>
+          <td>{{ v.destino }}</td>
+          <td>{{ v.responsavel.username }}</td>
+          <td>{{ v.data_partida|date:"d/m/Y H:i" }}</td>
+          <td>{% if v.data_retorno %}{{ v.data_retorno|date:"d/m/Y H:i" }}{% else %}—{% endif %}</td>
+          <td>{{ v.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
   </section>
 </main>
+
+{# Dados seguros para JS #}
+{% if viagens_por_loja %}{{ viagens_por_loja|json_script:"viagens-por-loja" }}{% endif %}
+{% if viagens_por_mes %}{{ viagens_por_mes|json_script:"viagens-por-mes" }}{% endif %}
+
+{# Chart.js #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+(function () {
+  // formata 'YYYY-MM-DD' -> 'MM/YYYY'
+  function mesLabel(ymd) {
+    if (!ymd) return '';
+    const [y,m] = String(ymd).split('-');
+    return `${m}/${y}`;
+  }
+
+  // Top Lojas
+  const lojasNode = document.getElementById('viagens-por-loja');
+  if (lojasNode) {
+    const raw = JSON.parse(lojasNode.textContent || '[]');
+    const labels = raw.map(x => x.nome || '');
+    const values = raw.map(x => x.qtd || 0);
+
+    const ctx = document.getElementById('chartTopLojas').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Viagens', data: values }] },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+
+  // Viagens por mês
+  const mesNode = document.getElementById('viagens-por-mes');
+  if (mesNode) {
+    const raw = JSON.parse(mesNode.textContent || '[]');
+    const labels = raw.map(x => mesLabel(x.mes));
+    const values = raw.map(x => x.qtd || 0);
+
+    const ctx = document.getElementById('chartMes').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{ label: 'Viagens', data: values, tension: 0.3 }] },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

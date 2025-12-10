@@ -397,3 +397,25 @@ input:focus {
   max-height: 280px;
   margin: 10px auto;
 }
+
+/* Ajustes para mais cards no dashboard */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.dash-span-2 { grid-column: span 2; }
+
+@media (min-width: 1200px) {
+  .dash-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+    grid-auto-rows: minmax(100px, auto);
+  }
+}
+
+/* Canvases mais compactos */
+#chartStatus, #chartSerie, #chartRanking, #chartPrio {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}

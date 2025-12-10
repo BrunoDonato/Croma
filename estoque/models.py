@@ -71,3 +71,27 @@ class SaldoEstoque(models.Model):
 
     def __str__(self):
         return f"{self.produto} @ {self.loja}: {self.quantidade}"
+
+class Movimentacao(models.Model):
+    TIPO_CHOICES = [
+        ("ENTRADA", "Entrada"),
+        ("SAIDA", "Saída"),
+        ("TRANSFERENCIA", "Transferência"),
+    ]
+
+    produto = models.ForeignKey(Produto, on_delete=models.PROTECT, related_name="movs")
+    tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
+    origem = models.ForeignKey(Loja, on_delete=models.PROTECT, related_name="movs_origem", null=True, blank=True)
+    destino = models.ForeignKey(Loja, on_delete=models.PROTECT, related_name="movs_destino", null=True, blank=True)
+
+    quantidade = models.PositiveIntegerField()
+    observacao = models.TextField(blank=True, null=True)
+
+    data_movimentacao = models.DateTimeField(auto_now_add=True)
+    usuario = models.ForeignKey("auth.User", on_delete=models.PROTECT)
+
+    class Meta:
+        ordering = ["-data_movimentacao"]
+
+    def __str__(self):
+        return f"{self.tipo} - {self.produto.nome} ({self.quantidade})"

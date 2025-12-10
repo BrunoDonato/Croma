@@ -5,11 +5,12 @@ from django.utils import timezone
 from django.contrib.auth import views as auth_views
 from django.urls import reverse
 
-from .forms import RegistroForm, LoginForm
+from .forms import RegistroForm
 from .decorators import admin_required
 
 from datetime import timedelta
-from django.db.models import Count
+from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField
+from django.db.models.functions import TruncDate
 from ordens.models import OrdemServico, AndamentoOS
 from viagens.models import Viagem
 
@@ -17,6 +18,7 @@ from viagens.models import Viagem
 # Checa se é admin
 def is_admin(user):
     return user.is_superuser or user.groups.filter(name="admin").exists()
+
 
 # Tela de Login personalizada
 class CustomLoginView(auth_views.LoginView):
@@ -139,6 +141,71 @@ def dashboard(request):
         "chart_values": chart_values,
         "atividade": atividade,
     }
+
+    # Análises do Dashboard
+    inicio_janela = agora - timedelta(days=29)
+
+    # Série temporal
+    abertas_por_dia = (
+        OrdemServico.objects.filter(data_abertura__date__gte=inicio_janela.date())
+        .annotate(dia=TruncDate("data_abertura"))
+        .values("dia").annotate(total=Count("id")).order_by("dia")
+    )
+    finalizadas_por_dia = (
+        OrdemServico.objects.filter(status="FINALIZADA", data_fechamento__date__gte=inicio_janela.date())
+        .annotate(dia=TruncDate("data_fechamento"))
+        .values("dia").annotate(total=Count("id")).order_by("dia")
+    )
+
+    dias = []
+    cur = inicio_janela.date()
+    while cur <= agora.date():
+        dias.append(cur.isoformat())
+        cur += timedelta(days=1)
+
+    map_abertas = {r["dia"].isoformat(): r["total"] for r in abertas_por_dia}
+    map_final = {r["dia"].isoformat(): r["total"] for r in finalizadas_por_dia}
+    serie_abertas = [map_abertas.get(d, 0) for d in dias]
+    serie_final = [map_final.get(d, 0) for d in dias]
+
+    # Ranking por loja
+    ranking_lojas = (
+        OrdemServico.objects.filter(status__in=["ABERTA", "EM_ANALISE", "EM_EXECUCAO"])
+        .values("loja__nome").annotate(total=Count("id")).order_by("-total")[:5]
+    )
+    ranking_labels = [r["loja__nome"] for r in ranking_lojas]
+    ranking_values = [r["total"] for r in ranking_lojas]
+
+    # Distribuição por prioridade
+    prio = (
+        OrdemServico.objects.values("prioridade").annotate(total=Count("id")).order_by()
+    )
+    PRIO_LABELS = {"BAIXA": "Baixa", "MEDIA": "Média", "ALTA": "Alta", "CRITICA": "Crítica"}
+    prio_labels = [PRIO_LABELS.get(x["prioridade"], x["prioridade"]) for x in prio]
+    prio_values = [x["total"] for x in prio]
+
+    # MTTR médio do mês (em horas)
+    dur_expr = ExpressionWrapper(F("data_fechamento") - F("data_abertura"), output_field=DurationField())
+    mttr_qs = (
+        OrdemServico.objects.filter(status="FINALIZADA", data_fechamento__gte=inicio_mes)
+        .annotate(dur=dur_expr).aggregate(media=Avg("dur"))
+    )
+    mttr_horas = None
+    if mttr_qs["media"]:
+        total_sec = mttr_qs["media"].total_seconds()
+        mttr_horas = round(total_sec / 3600.0, 1)
+
+    context.update({
+        "serie_dias": dias,
+        "serie_abertas": serie_abertas,
+        "serie_final": serie_final,
+        "ranking_labels": ranking_labels,
+        "ranking_values": ranking_values,
+        "prio_labels": prio_labels,
+        "prio_values": prio_values,
+        "mttr_horas": mttr_horas,
+    })
+
     return render(request, "contas/dashboard.html", context)
 
 

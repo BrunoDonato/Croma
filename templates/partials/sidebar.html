@@ -21,10 +21,7 @@
           Ordens de Serviço
         </a>
 
-        <a href="{% url 'ordens:os_nova' %}"
-           class="menu-link {% if app == 'ordens' and name == 'os_nova' %}is-active{% endif %}">
-          Nova O.S.
-        </a>
+
       {% else %}
         <!-- Usuario comum -->
         <a href="{% url 'ordens:os_nova' %}"
@@ -39,24 +36,58 @@
     </div>
 
     {% if user.is_superuser or user.groups.all.0.name == "admin" %}
-    <!-- Cadastros -->
-    <div class="menu-section">
-      <p class="menu-title">CADASTROS</p>
 
-      <a href="{% url 'viagens:nova' %}"
-         class="menu-link {% if app == 'viagens' and name in 'nova,detalhe' %}is-active{% endif %}">
-        Viagens
+      <!-- Relatorios -->
+      <div class="menu-section">
+      <p class="menu-title">RELATORIOS</p>
+      <a href="{% url 'relatorios:os' %}"
+        class="menu-link {% if app == 'relatorios' and name == 'os' %}is-active{% endif %}">
+        Relatórios de OS
       </a>
 
       <a href="{% url 'relatorios:viagens' %}"
-         class="menu-link {% if app == 'relatorios' %}is-active{% endif %}">
-        Relatórios
+        class="menu-link {% if app == 'relatorios' and name == 'viagens' %}is-active{% endif %}">
+        Relatórios de Viagens
+      </a>
+
+
+      <a href="{% url 'relatorios:problemas' %}"
+        class="menu-link {% if app == 'relatorios' and name == 'problemas' %}is-active{% endif %}">
+        Relatórios de Problemas
+      </a>
+
+      <a href="{% url 'estoque:home' %}"
+        class="menu-link {% if app == 'estoque' and name == 'home' %}is-active{% endif %}">
+        Relatórios de Estoque
+      </a>
+
+        </div>
+
+      <!-- Cadastros -->
+    <div class="menu-section">
+      <p class="menu-title">CADASTROS</p>
+
+      <a href="{% url 'ordens:os_nova' %}"
+         class="menu-link {% if app == 'ordens' and name == 'os_nova' %}is-active{% endif %}">
+        Cadastrar Nova OS
+      </a>
+
+
+      <a href="{% url 'viagens:nova' %}"
+         class="menu-link {% if app == 'viagens' and name in 'nova,detalhe' %}is-active{% endif %}">
+        Cadastrar Viagem
       </a>
 
       <a href="{% url 'contas:registrar' %}"
          class="menu-link {% if app == 'contas' and name == 'registrar' %}is-active{% endif %}">
         Cadastrar Usuário
       </a>
+    </div>
+
+    <!-- Contatos -->
+    <div class="menu-section">
+      <p class="menu-title">CONTATOS</p>
+      <a href="#" class="menu-link">Prestadores de Serviço</a>
     </div>
 
     <!-- Sistema -->

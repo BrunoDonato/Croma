@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.forms import ModelChoiceField
 
-from .models import OrdemServico, AndamentoOS, AnexoOS
+from .models import OrdemServico, AndamentoOS, AnexoOS, CategoriaProblema
 
 User = get_user_model()
 
@@ -127,14 +127,15 @@ class CancelarForm(forms.ModelForm):
         self.fields["motivo_cancelamento"].required = True
 
 
-# Atribuir Técnico / Prioridade
+# Atribuir Técnico / Prioridade / Categoria
 class AtribuirTecnicoForm(forms.ModelForm):
     class Meta:
         model = OrdemServico
-        fields = ("tecnico_responsavel", "prioridade")
+        fields = ("tecnico_responsavel", "prioridade", "categoria")
         labels = {
             "tecnico_responsavel": "Técnico responsável",
             "prioridade": "Prioridade",
+            "categoria": "Categoria do problema",
         }
 
     def __init__(self, *args, **kwargs):
@@ -142,6 +143,10 @@ class AtribuirTecnicoForm(forms.ModelForm):
         admins_qs = User.objects.filter(Q(is_superuser=True) | Q(groups__name="admin")).distinct().order_by("username")
         self.fields["tecnico_responsavel"].queryset = admins_qs
         self.fields["tecnico_responsavel"].required = False
+
+        # adiciona as categorias ativas
+        self.fields["categoria"].queryset = CategoriaProblema.objects.filter(ativo=True).order_by("nome")
+        self.fields["categoria"].required = False
 
     def clean_tecnico_responsavel(self):
         u = self.cleaned_data.get("tecnico_responsavel")

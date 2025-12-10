@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="main-content with-sidebar">
+  <section class="card">
+    <h1>Nova Movimentação</h1>
+
+    <form method="post" class="form">
+      {% csrf_token %}
+
+      <div class="field">
+        <label>Tipo</label>
+        <select name="tipo" id="tipo-select" required>
+          <option value="ENTRADA">Entrada</option>
+          <option value="SAIDA">Saída</option>
+          <option value="TRANSFERENCIA">Transferência</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Produto</label>
+        <select name="produto" required>
+          <option value="">Selecione</option>
+          {% for p in produtos %}
+          <option value="{{ p.id }}">{{ p.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Origem</label>
+        <select name="origem" id="origem-select">
+          <option value="">Nenhuma</option>
+          {% for l in lojas %}
+          <option value="{{ l.id }}">{{ l.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Destino</label>
+        <select name="destino" id="destino-select">
+          <option value="">Nenhuma</option>
+          {% for l in lojas %}
+          <option value="{{ l.id }}">{{ l.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Quantidade</label>
+        <input type="number" name="quantidade" min="1" required>
+      </div>
+
+      <div class="field">
+        <label>Observação</label>
+        <textarea name="observacao" rows="3"></textarea>
+      </div>
+
+      <button class="btn-primary" type="submit">Registrar</button>
+      <a class="btn-small" href="{% url 'estoque:home' %}">Cancelar</a>
+    </form>
+  </section>
+</main>
+
+<script>
+  const tipo = document.getElementById("tipo-select");
+  const origem = document.getElementById("origem-select");
+  const destino = document.getElementById("destino-select");
+
+  function atualizarCampos() {
+    if (tipo.value === "ENTRADA") {
+      origem.disabled = true;
+      destino.disabled = false;
+    } else if (tipo.value === "SAIDA") {
+      origem.disabled = false;
+      destino.disabled = true;
+    } else {
+      origem.disabled = false;
+      destino.disabled = false;
+    }
+  }
+
+  tipo.addEventListener("change", atualizarCampos);
+  atualizarCampos();
+</script>
+{% endblock %}
