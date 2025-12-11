@@ -3,9 +3,9 @@
 {% block content %}
 <main class="container--wide">
   <section class="card">
-    <h1>Relatórios de Estoque</h1>
+    <h1 class="page-title">Relatórios de Estoque</h1>
     <p class="muted">
-      Aqui você pode acompanhar os produtos, filtrar,
+      Área para acompanhar os produtos presentes no estoque, filtrar pesquisas,
       e realizar exportações.
     </p>
 
@@ -32,35 +32,33 @@
         <div class="kpi-value">{{ kpi_total_geral|default:"—" }}</div>
       </div>
     </div>
-
-    <!-- Ações -->
-    <div class="mt-2" style="display:flex;gap:8px;flex-wrap:wrap;">
-      <!-- Novo produto abre o admin em nova aba -->
-      <a class="btn-small" href="{% url 'admin:estoque_produto_add' %}" target="_blank">
-        Novo Produto
-      </a>
-
-      <!-- Nova movimentação -->
-      <a class="btn-small" href="{% url 'estoque:movimentar' %}">Nova Movimentação</a>
-
-      <!-- Exportar CSV respeitando os filtros atuais -->
-      <a class="btn-small"
-         href="{% url 'estoque:exportar_csv' %}?{{ request.GET.urlencode }}">
-        Exportar CSV
-      </a>
-    </div>
   </section>
 
   <!-- Filtros e Tabela -->
   <section class="card mt-2">
-    <h2>Produtos em estoque</h2>
+
+   <div class="top-actions">
+<a class="btn-small" href="{% url 'admin:estoque_produto_add' %}" target="_blank">
+    Novo Produto
+</a>
+
+<a class="btn-small" href="{% url 'estoque:movimentar' %}">
+    Nova Movimentação
+</a>
+
+
+
+</div>
+
+
+
+    </div>
 
     <!-- Filtros -->
-    <form method="get" class="filters"
-          style="display:grid;grid-template-columns:repeat(4,minmax(200px,1fr));gap:12px;align-items:end;">
+    <form method="get" class="filters-row">
       <div class="field">
         <label for="categoria">Categoria</label>
-        <select name="categoria" id="categoria">
+        <select name="categoria" id="categoria" class="filter-select">
           <option value="">Todas</option>
           {% for c in categorias %}
             <option value="{{ c.id }}"
@@ -73,7 +71,7 @@
 
       <div class="field">
         <label for="ativo">Ativo</label>
-        <select name="ativo" id="ativo">
+        <select name="ativo" id="ativo" class="filter-select">
           <option value="">Todos</option>
           <option value="sim" {% if filtro_ativo == "sim" %}selected{% endif %}>Sim</option>
           <option value="nao" {% if filtro_ativo == "nao" %}selected{% endif %}>Não</option>
@@ -82,7 +80,7 @@
 
       <div class="field">
         <label for="situacao_central">Situação no Central</label>
-        <select name="situacao_central" id="situacao_central">
+        <select name="situacao_central" id="situacao_central" class="filter-select">
           <option value="">Todas</option>
           <option value="abaixo" {% if filtro_situacao == "abaixo" %}selected{% endif %}>
             Abaixo do mínimo
@@ -96,9 +94,19 @@
         </select>
       </div>
 
-      <div class="field" style="display:flex;gap:8px;justify-content:flex-end;">
-        <button type="submit" class="btn-small">Aplicar</button>
-        <a href="{% url 'estoque:home' %}" class="btn-small">Limpar</a>
+      <div class="filters-buttons">
+        <button type="submit" class="btn-small btn-filter">Filtrar</button>
+
+        <a href="{% url 'estoque:home' %}" class="btn-small btn-clean">
+          Limpar
+        </a>
+
+        <a
+          href="{% url 'estoque:exportar_csv' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}"
+          class="btn-small btn-export"
+        >
+          Exportar CSV
+        </a>
       </div>
     </form>
 
@@ -127,7 +135,6 @@
             <td>{{ p.categoria|default:"—" }}</td>
             <td>{{ p.unidade|default:"un" }}</td>
 
-            <!-- Saldo no Central mostra 0 se estiver zerado, vermelho se estiver abaixo do mínimo -->
             <td>
               {% if p.saldo_central < p.estoque_minimo %}
                 <span style="color:#d9534f;font-weight:bold;">
@@ -139,9 +146,7 @@
             </td>
 
             <td>{{ p.estoque_minimo }}</td>
-
             <td>{{ p.total_geral }}</td>
-
             <td>{{ p.fabricante|default:"—" }}</td>
             <td>{{ p.modelo|default:"—" }}</td>
 
@@ -156,7 +161,7 @@
             <td>
               <a href="{% url 'admin:estoque_produto_change' p.id %}"
                  target="_blank"
-                 class="btn-small">
+                 class="btn-chip">
                 Admin
               </a>
             </td>

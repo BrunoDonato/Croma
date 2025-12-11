@@ -66,25 +66,77 @@ def relatorio_viagens(request):
         .select_related("origem", "destino", "responsavel")
         .order_by("-data_partida")
     )
-    qs = _filtrar_viagens(request, qs_base)
+
+    # ---------- VISÃO GERAL (SEM FILTRO) ----------
+    qs_global = qs_base
 
     viagens_por_loja = (
-        qs.values(nome=F("destino__nome"))
-          .annotate(qtd=Count("id"))
-          .order_by("-qtd")
+        qs_global.values(nome=F("destino__nome"))
+                 .annotate(qtd=Count("id"))
+                 .order_by("-qtd")
     )
     viagens_por_mes = (
-        qs.annotate(mes=TruncMonth("data_partida"))
-          .values("mes")
-          .annotate(qtd=Count("id"))
-          .order_by("mes")
+        qs_global.annotate(mes=TruncMonth("data_partida"))
+                 .values("mes")
+                 .annotate(qtd=Count("id"))
+                 .order_by("mes")
     )
 
-    total_viagens = qs.count()
-    dist_status = list(qs.values("status").annotate(qtd=Count("id")).order_by("-qtd"))
-    top_responsaveis = list(qs.values(nome=F("responsavel__username")).annotate(qtd=Count("id")).order_by("-qtd")[:5])
+    total_viagens = qs_global.count()
+    dist_status = list(
+        qs_global.values("status")
+                 .annotate(qtd=Count("id"))
+                 .order_by("-qtd")
+    )
+    top_responsaveis = list(
+        qs_global.values(nome=F("responsavel__username"))
+                 .annotate(qtd=Count("id"))
+                 .order_by("-qtd")[:5]
+    )
 
-    # tabela
+    # ---------- FILTROS (APENAS TABELA / CSV) ----------
+    qs = _filtrar_viagens(request, qs_base)
+
+    # valores para manter selects marcados no template
+    origem_id = (request.GET.get("origem") or "").strip()
+    destino_id = (request.GET.get("destino") or "").strip()
+    responsavel_id = (request.GET.get("responsavel") or "").strip()
+    status_filtro = (request.GET.get("status") or "").strip()
+    dt_ini = (request.GET.get("dt_ini") or "").strip()
+    dt_fim = (request.GET.get("dt_fim") or "").strip()
+
+    # ---------- EXPORTAR CSV (VIAGENS FILTRADAS) ----------
+    if request.GET.get("export") == "csv":
+        response = HttpResponse(
+            content_type="text/csv; charset=utf-8-sig"
+        )
+        response["Content-Disposition"] = 'attachment; filename="relatorio_viagens.csv"'
+        writer = csv.writer(response, delimiter=";", lineterminator="\n")
+
+        writer.writerow([
+            "ID",
+            "Origem",
+            "Destino",
+            "Responsável",
+            "Status",
+            "Data partida",
+            "Data retorno",
+        ])
+
+        for v in qs:
+            writer.writerow([
+                v.id,
+                v.origem.nome if v.origem_id else "",
+                v.destino.nome if v.destino_id else "",
+                v.responsavel.username if v.responsavel_id else "",
+                v.status,
+                v.data_partida.strftime("%Y-%m-%d %H:%M") if v.data_partida else "",
+                v.data_retorno.strftime("%Y-%m-%d %H:%M") if v.data_retorno else "",
+            ])
+
+        return response
+
+    # tabela (filtrada)
     viagens = qs[:200]
 
     # combos
@@ -94,10 +146,13 @@ def relatorio_viagens(request):
                .distinct()
                .order_by("responsavel__username")
     )
-    status_distintos = qs_base.values_list("status", flat=True).distinct().order_by()
+    status_distintos = (
+        qs_base.values_list("status", flat=True)
+               .distinct()
+               .order_by()
+    )
 
-    return render(request, "relatorios/viagens.html", {
-        # Converte para list
+    context = {
         "viagens_por_loja": list(viagens_por_loja),
         "viagens_por_mes": list(viagens_por_mes),
 
@@ -109,7 +164,22 @@ def relatorio_viagens(request):
         "lojas": lojas,
         "responsaveis": list(responsaveis),
         "status_distintos": list(status_distintos),
-    })
+
+        # filtros selecionados (pra usar nos selects / inputs)
+        "origem_escolhida": origem_id,
+        "destino_escolhida": destino_id,
+        "responsavel_escolhido": responsavel_id,
+        "status_escolhido": status_filtro,
+        "dt_ini": dt_ini,
+        "dt_fim": dt_fim,
+    }
+
+    # se o model tiver STATUS_CHOICES, manda também
+    if hasattr(Viagem, "STATUS_CHOICES"):
+        context["status_choices"] = Viagem.STATUS_CHOICES
+
+    return render(request, "relatorios/viagens.html", context)
+
 
 
 # Relatorios de OS

@@ -9,10 +9,11 @@ from .forms import RegistroForm
 from .decorators import admin_required
 
 from datetime import timedelta
-from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField
-from django.db.models.functions import TruncDate
+from django.db.models import Count, Avg, F, ExpressionWrapper, DurationField, Sum, Q
+from django.db.models.functions import TruncDate, Coalesce
 from ordens.models import OrdemServico, AndamentoOS
 from viagens.models import Viagem
+from estoque.models import Produto
 
 
 # Checa se é admin
@@ -195,6 +196,37 @@ def dashboard(request):
         total_sec = mttr_qs["media"].total_seconds()
         mttr_horas = round(total_sec / 3600.0, 1)
 
+    # Situação geral do Estoque Central
+    produtos_central = (
+        Produto.objects.filter(ativo=True)
+        .annotate(
+            central_qtd=Coalesce(
+                Sum(
+                    "saldos__quantidade",
+                    filter=Q(saldos__loja__is_central=True)
+                ),
+                0
+            )
+        )
+    )
+
+    estoque_abaixo = produtos_central.filter(
+        central_qtd__lt=F("estoque_minimo"),
+        central_qtd__gt=0
+    ).count()
+
+    estoque_ok = produtos_central.filter(
+        central_qtd__gte=F("estoque_minimo"),
+        central_qtd__gt=0
+    ).count()
+
+    estoque_zerado = produtos_central.filter(
+        central_qtd=0
+    ).count()
+
+    estoque_labels = ["Dentro do mínimo", "Abaixo do mínimo", "Zerado no Central"]
+    estoque_values = [estoque_ok, estoque_abaixo, estoque_zerado]
+
     context.update({
         "serie_dias": dias,
         "serie_abertas": serie_abertas,
@@ -204,6 +236,8 @@ def dashboard(request):
         "prio_labels": prio_labels,
         "prio_values": prio_values,
         "mttr_horas": mttr_horas,
+        "estoque_labels": estoque_labels,
+        "estoque_values": estoque_values,
     })
 
     return render(request, "contas/dashboard.html", context)

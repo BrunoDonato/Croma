@@ -2,120 +2,154 @@
 {% load static %}
 
 {% block content %}
-<main class="mcontainer--wide">
-  <section class="dash-grid">
-    <!-- KPIs -->
-    <div class="kpi-card">
-      <div class="kpi-title">OS Abertas</div>
-      <div class="kpi-value">{{ kpi_abertas }}</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Em Execução</div>
-      <div class="kpi-value">{{ kpi_execucao }}</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Finalizadas no mês</div>
-      <div class="kpi-value">{{ kpi_finalizadas_mes }}</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">Em atraso (3+ dias)</div>
-      <div class="kpi-value">{{ kpi_atrasadas }}</div>
-    </div>
-    <div class="kpi-card">
+<main class="container--wide">
+  <section class="card">
+    <h1>Dashboard</h1>
+
+    <div style="display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin-top:16px;">
+      <div class="kpi-card" style="padding:12px 14px;border-top-width:3px;">
+        <div class="kpi-title">OS Abertas</div>
+        <div class="kpi-value">{{ kpi_abertas }}</div>
+      </div>
+      <div class="kpi-card" style="padding:12px 14px;border-top-width:3px;">
+        <div class="kpi-title">Em Execução</div>
+        <div class="kpi-value">{{ kpi_execucao }}</div>
+      </div>
+      <div class="kpi-card" style="padding:12px 14px;border-top-width:3px;">
+        <div class="kpi-title">Finalizadas no mês</div>
+        <div class="kpi-value">{{ kpi_finalizadas_mes }}</div>
+      </div>
+      <div class="kpi-card" style="padding:12px 14px;border-top-width:3px;">
+        <div class="kpi-title">Em atraso (3+ dias)</div>
+        <div class="kpi-value">{{ kpi_atrasadas }}</div>
+      </div>
+      <div class="kpi-card" style="padding:12px 14px;border-top-width:3px;">
         <div class="kpi-title">MTTR (mês)</div>
         <div class="kpi-value">
-            {% if mttr_horas %}{{ mttr_horas }}h{% else %}—{% endif %}
+          {% if mttr_horas %}{{ mttr_horas }}h{% else %}—{% endif %}
         </div>
+      </div>
     </div>
-
-    <!-- Donut -->
-    <section class="card dash-span-2">
-      <h2>Distribuição por Status OS</h2>
-      <canvas id="chartStatus" width="280" height="100"></canvas>
-    </section>
-
-    <!-- Pendências -->
-    <section class="card">
-      <h2>Pendências</h2>
-
-      <h3 class="mt-1">OS Sem técnico responsável</h3>
-      <ul class="list">
-        {% for os in sem_tecnico %}
-          <li>
-            <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
-            <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
-          </li>
-        {% empty %}
-          <li class="muted">Nenhuma OS pendente de atribuição.</li>
-        {% endfor %}
-      </ul>
-
-      <h3 class="mt-2">OS Em análise (atrasadas)</h3>
-      <ul class="list">
-        {% for os in analise_atraso %}
-          <li>
-            <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
-            <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
-          </li>
-        {% empty %}
-          <li class="muted">Nenhuma OS atrasada em análise.</li>
-        {% endfor %}
-      </ul>
-
-      <h3 class="mt-2">Viagens (hoje/amanhã)</h3>
-      <ul class="list">
-        {% for v in viagens_proximas %}
-          <li>
-            {{ v.origem }} → {{ v.destino }}
-            <span class="muted"> • {{ v.data_partida|date:"d/m/Y H:i" }}</span>
-          </li>
-        {% empty %}
-          <li class="muted">Sem viagens próximas.</li>
-        {% endfor %}
-      </ul>
-    </section>
-
-    <!-- Atividade -->
-    <section class="card">
-      <h2>Atividade recente</h2>
-      <ul class="timeline">
-        {% for a in atividade %}
-          <li class="tl-item">
-            <div class="tl-meta">
-              <strong>{{ a.autor.username }}</strong>
-              <span>{{ a.criado_em|date:"d/m/Y H:i" }}</span>
-            </div>
-            <div class="muted">OS #{{ a.os.id }}</div>
-            <div>{{ a.texto|default:"(sem texto)" }}</div>
-          </li>
-        {% empty %}
-          <li class="muted">Nenhuma atividade recente.</li>
-        {% endfor %}
-      </ul>
-    </section>
   </section>
+
+  {# Linha com os 2 gráficos #}
+  <section class="card dashboard-charts">
+  <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;align-items:stretch;">
+      <div>
+        <h2>Distribuição por Status OS</h2>
+        <canvas id="chartStatus" height="200"></canvas>
+      </div>
+
+      <div>
+        <h2>Situação do Estoque Central</h2>
+        {% if estoque_values %}
+          <canvas id="chartEstoque" height="200"></canvas>
+        {% else %}
+          <p class="muted" style="margin-top:16px;">
+            Nenhum dado de estoque central para exibir.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:24px;">
+      <section>
+        <h2>Pendências</h2>
+
+        <h3 class="mt-1">OS Sem técnico responsável</h3>
+        <ul class="list">
+          {% for os in sem_tecnico %}
+            <li>
+              <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
+              <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
+            </li>
+          {% empty %}
+            <li class="muted">Nenhuma OS pendente de atribuição.</li>
+          {% endfor %}
+        </ul>
+
+        <h3 class="mt-2">OS Em análise (atrasadas)</h3>
+        <ul class="list">
+          {% for os in analise_atraso %}
+            <li>
+              <a href="{% url 'ordens:os_detalhe' os.id %}">OS #{{ os.id }}</a>
+              <span class="muted"> • {{ os.loja }} — {{ os.data_abertura|date:"d/m/Y H:i" }}</span>
+            </li>
+          {% empty %}
+            <li class="muted">Nenhuma OS atrasada em análise.</li>
+          {% endfor %}
+        </ul>
+
+        <h3 class="mt-2">Viagens (hoje/amanhã)</h3>
+        <ul class="list">
+          {% for v in viagens_proximas %}
+            <li>
+              {{ v.origem }} → {{ v.destino }}
+              <span class="muted"> • {{ v.data_partida|date:"d/m/Y H:i" }}</span>
+            </li>
+          {% empty %}
+            <li class="muted">Sem viagens próximas.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section>
+        <h2>Atividade recente</h2>
+        <ul class="timeline">
+          {% for a in atividade %}
+            <li class="tl-item">
+              <div class="tl-meta">
+                <strong>{{ a.autor.username }}</strong>
+                <span>{{ a.criado_em|date:"d/m/Y H:i" }}</span>
+              </div>
+              <div class="muted">OS #{{ a.os.id }}</div>
+              <div>{{ a.texto|default:"(sem texto)" }}</div>
+            </li>
+          {% empty %}
+            <li class="muted">Nenhuma atividade recente.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </div>
+  </section>
+
 </main>
 
-<!-- Chart.js (CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-{# Dados do gráfico de forma segura #}
-{{ chart_labels|json_script:"chart-labels" }}
-{{ chart_values|json_script:"chart-values" }}
-
+{# Dados dos gráficos em JSON seguro #}
+{{ chart_labels|json_script:"chart-status-labels" }}
+{{ chart_values|json_script:"chart-status-values" }}
+{{ estoque_labels|json_script:"chart-estoque-labels" }}
+{{ estoque_values|json_script:"chart-estoque-values" }}
 
 <script>
-  (function () {
-    // Donut
-    const labels = JSON.parse(document.getElementById('chart-labels').textContent)
-    const values = JSON.parse(document.getElementById('chart-values').textContent)
+(function () {
+  function getJSON(id) {
+    const el = document.getElementById(id);
+    if (!el) return [];
+    try {
+      const txt = (el.textContent || '').trim();
+      return txt ? JSON.parse(txt) : [];
+    } catch (e) {
+      return [];
+    }
+  }
 
-    const ctx = document.getElementById('chartStatus').getContext('2d')
-    new Chart(ctx, {
+  const statusLabels = getJSON('chart-status-labels');
+  const statusValues = getJSON('chart-status-values');
+  const estoqueLabels = getJSON('chart-estoque-labels');
+  const estoqueValues = getJSON('chart-estoque-values');
+
+  const statusCanvas = document.getElementById('chartStatus');
+  if (statusCanvas && statusLabels.length && statusValues.length) {
+    new Chart(statusCanvas.getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: labels,
-        datasets: [{ data: values }]
+        labels: statusLabels,
+        datasets: [{ data: statusValues }]
       },
       options: {
         responsive: true,
@@ -125,7 +159,27 @@
         },
         cutout: '60%'
       }
-    })
-  })()
+    });
+  }
+
+  const estoqueCanvas = document.getElementById('chartEstoque');
+  if (estoqueCanvas && estoqueLabels.length && estoqueValues.length) {
+    new Chart(estoqueCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: estoqueLabels,
+        datasets: [{ data: estoqueValues }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: false }
+        },
+        cutout: '60%'
+      }
+    });
+  }
+})();
 </script>
 {% endblock %}

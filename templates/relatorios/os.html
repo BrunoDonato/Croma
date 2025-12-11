@@ -2,48 +2,49 @@
 {% load static %}
 
 {% block content %}
-<main class="main-content with-sidebar">
+<main class="container--wide">
 
   <!-- Filtros -->
   <section class="card">
     <h1>Relatório de Ordens de Serviço</h1>
 
-    <form method="get" class="filters" style="display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:12px;align-items:end;">
-      <div class="field">
-        <label for="status">Status</label>
-        <select name="status" id="status">
-          <option value="">Todos</option>
-          {% for key,label in status_choices %}
-            <option value="{{ key }}" {% if request.GET.status == key %}selected{% endif %}>{{ label }}</option>
-          {% endfor %}
-        </select>
-      </div>
+    <form method="get" class="filters">
+      <div class="filters-row">
+        <div class="field">
+          <label for="status">Status</label>
+          <select name="status" id="status">
+            <option value="">Todos</option>
+            {% for key,label in status_choices %}
+              <option value="{{ key }}" {% if request.GET.status == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-      <div class="field">
-        <label for="loja">Loja</label>
-        <select name="loja" id="loja">
-          <option value="">Todas</option>
-          {% for l in lojas %}
-            <option value="{{ l.id }}" {% if request.GET.loja == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
-          {% endfor %}
-        </select>
-      </div>
+        <div class="field">
+          <label for="loja">Loja</label>
+          <select name="loja" id="loja">
+            <option value="">Todas</option>
+            {% for l in lojas %}
+              <option value="{{ l.id }}" {% if request.GET.loja == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-      <div class="field">
-        <label for="dt_ini">De</label>
-        <input type="date" id="dt_ini" name="dt_ini" value="{{ request.GET.dt_ini|default:'' }}">
-      </div>
+        <div class="field">
+          <label for="dt_ini">De</label>
+          <input type="date" id="dt_ini" name="dt_ini" value="{{ request.GET.dt_ini|default:'' }}">
+        </div>
 
-      <div class="field">
-        <label for="dt_fim">Até</label>
-        <input type="date" id="dt_fim" name="dt_fim" value="{{ request.GET.dt_fim|default:'' }}">
-      </div>
+        <div class="field">
+          <label for="dt_fim">Até</label>
+          <input type="date" id="dt_fim" name="dt_fim" value="{{ request.GET.dt_fim|default:'' }}">
+        </div>
 
-      <div class="field" style="display:flex;gap:8px;">
-        <button type="submit" class="btn-small">Aplicar</button>
-        <a class="btn-small" href="{% url 'relatorios:os' %}">Limpar</a>
-          <a class="btn-small" href="{% url 'relatorios:os_csv' %}?{{ request.GET.urlencode }}">Exportar CSV</a>
-
+        <div class="filters-buttons">
+          <button type="submit" class="btn-filter">Filtrar</button>
+          <a class="btn-clean" href="{% url 'relatorios:os' %}">Limpar</a>
+          <a class="btn-export" href="{% url 'relatorios:os_csv' %}?{{ request.GET.urlencode }}">Exportar CSV</a>
+        </div>
       </div>
     </form>
   </section>
@@ -86,24 +87,26 @@
   <!-- Gráficos -->
   <section class="card">
     <h2>Visão rápida</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch;">
       <div>
         <h3 class="mt-1">OS por prioridade</h3>
-        <canvas id="chartPrio" height="160"></canvas>
+        <div style="width:100%;height:320px;">
+          <canvas id="chartPrio"></canvas>
+        </div>
       </div>
       <div>
         <h3 class="mt-1">Lojas com mais OS abertas</h3>
-        <canvas id="chartLojas" height="160"></canvas>
+        <div style="width:100%;height:320px;">
+          <canvas id="chartLojas"></canvas>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-{# Dados JSON seguros para os gráficos #}
 {{ chart_prio_labels|json_script:"prio-labels" }}
 {{ chart_prio_values|json_script:"prio-values" }}
 {{ chart_lojas_labels|json_script:"lojas-labels" }}
@@ -111,7 +114,6 @@
 
 <script>
 (function () {
-  // Lê JSON com segurança; se o elemento não existir ou estiver vazio, retorna []
   function readJSON(id, fallback = []) {
     const el = document.getElementById(id);
     if (!el) return fallback;
@@ -123,13 +125,11 @@
     }
   }
 
-  // Dados vindos do Django (seguro mesmo se faltarem)
   const prioLabels   = readJSON('prio-labels');
   const prioValues   = readJSON('prio-values');
   const lojasLabels  = readJSON('lojas-labels');
   const lojasValues  = readJSON('lojas-values');
 
-  // Gráfico: OS por prioridade
   const c1 = document.getElementById('chartPrio');
   if (c1 && prioLabels.length && prioValues.length) {
     new Chart(c1, {
@@ -143,13 +143,13 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
       }
     });
   }
 
-  // Gráfico: TOP 5 Lojas com mais OS em aberto
   const c2 = document.getElementById('chartLojas');
   if (c2 && lojasLabels.length && lojasValues.length) {
     new Chart(c2, {
@@ -163,6 +163,7 @@
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
       }

@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     'viagens',
     'ordens',
     'relatorios',
+    'prestadores',
 ]
 
 MIDDLEWARE = [

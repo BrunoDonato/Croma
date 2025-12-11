@@ -8,11 +8,10 @@
     <div class="os-header">
       <h1>Detalhes da OS #{{ os.id }}</h1>
       {% if is_admin %}
-  <a class="btn-small" href="{% url 'viagens:viagem_nova' %}?os={{ os.id }}">
-    + Registrar viagem desta OS
-  </a>
-{% endif %}
-      </a>
+        <a class="btn-small" href="{% url 'viagens:viagem_nova' %}?os={{ os.id }}">
+          + Registrar viagem desta OS
+        </a>
+      {% endif %}
     </div>
 
     <div class="os-summary">
@@ -43,103 +42,112 @@
   </section>
 
   <!-- Andamentos -->
-<section class="os-card os-andamentos">
-  <h3>Andamentos</h3>
+  <section class="os-card os-andamentos">
+    <h3>Andamentos</h3>
 
-  <form action="{% url 'ordens:os_comentario' os.id %}" method="post" class="stack mb-2">
-    {% csrf_token %}
-    <div class="field">
-      {{ andamento_form.texto.label_tag }}
-      {{ andamento_form.texto }}
-    </div>
-
-    {% if is_admin %}
+    <form action="{% url 'ordens:os_comentario' os.id %}" method="post" class="stack mb-2">
+      {% csrf_token %}
       <div class="field">
-        {{ andamento_form.visibilidade.label_tag }}
-        {{ andamento_form.visibilidade }}
+        {{ andamento_form.texto.label_tag }}
+        {{ andamento_form.texto }}
       </div>
-    {% else %}
-      <input type="hidden" name="visibilidade" value="PUBLICO">
-    {% endif %}
 
-    <button class="btn-small">Adicionar comentário</button>
-  </form>
-
-  <ul class="timeline">
-    {% for a in andamentos %}
-      <li class="tl-item">
-        <div class="tl-meta">
-          <strong>{{ a.autor.username }}</strong>
-          <span>{{ a.criado_em|date:"d/m/Y H:i" }}</span>
+      {% if is_admin %}
+        <div class="field">
+          {{ andamento_form.visibilidade.label_tag }}
+          {{ andamento_form.visibilidade }}
         </div>
-        {% if a.status_de or a.status_para %}
-          <div class="muted">Status: {{ a.status_de|default:"—" }} → {{ a.status_para|default:"—" }}</div>
-        {% endif %}
-        <div>{{ a.texto|default:"(sem texto)" }}</div>
-        <span class="badge">{{ a.get_visibilidade_display }}</span>
-      </li>
-    {% empty %}
-      <li class="muted">Nenhum andamento registrado.</li>
-    {% endfor %}
-  </ul>
-</section>
+      {% else %}
+        <input type="hidden" name="visibilidade" value="PUBLICO">
+      {% endif %}
 
+      <button class="btn-small">Adicionar comentário</button>
+    </form>
+
+    <ul class="timeline">
+      {% for a in andamentos %}
+        <li class="tl-item">
+          <div class="tl-meta">
+            <strong>{{ a.autor.username }}</strong>
+            <span>{{ a.criado_em|date:"d/m/Y H:i" }}</span>
+          </div>
+          {% if a.status_de or a.status_para %}
+            <div class="muted">Status: {{ a.status_de|default:"—" }} → {{ a.status_para|default:"—" }}</div>
+          {% endif %}
+          <div>{{ a.texto|default:"(sem texto)" }}</div>
+          <span class="badge">{{ a.get_visibilidade_display }}</span>
+        </li>
+      {% empty %}
+        <li class="muted">Nenhum andamento registrado.</li>
+      {% endfor %}
+    </ul>
+  </section>
 
   <!-- Ações -->
-{% if is_admin %}
+  {% if is_admin %}
   <aside class="os-card os-acoes">
     <h3>Ações</h3>
 
+    <!-- Atribuir técnico / prioridade / categoria -->
     <form action="{% url 'ordens:os_atribuir' os.id %}" method="post" class="stack">
       {% csrf_token %}
       {{ atribuir_form.as_p }}
-      <button type="submit" class="btn-small w-full">Salvar atribuição/prioridade</button>
+      <button type="submit" class="btn-small">Salvar atribuição/prioridade</button>
     </form>
+
     <hr>
 
     {% if os.status == "ABERTA" %}
+      <!-- Iniciar análise -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack">
         {% csrf_token %}
         <input type="hidden" name="acao" value="EM_ANALISE">
-        <button class="btn-small w-full">Iniciar Análise</button>
+        <button class="btn-small">Iniciar Análise</button>
       </form>
+
+      <!-- Cancelar OS (ABERTA) -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack mt-2">
         {% csrf_token %}
         <input type="hidden" name="acao" value="CANCELADA">
         {{ cancelar_form.as_p }}
-        <button class="btn-small btn-danger w-full">Cancelar OS</button>
+        <button class="btn-small btn-danger">Cancelar OS</button>
       </form>
 
     {% elif os.status == "EM_ANALISE" %}
+      <!-- Ir para execução -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack">
         {% csrf_token %}
         <input type="hidden" name="acao" value="EM_EXECUCAO">
-        <button class="btn-small w-full">Iniciar Execução</button>
+        <button class="btn-small">Iniciar Execução</button>
       </form>
+
+      <!-- Cancelar OS (EM_ANALISE) -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack mt-2">
         {% csrf_token %}
         <input type="hidden" name="acao" value="CANCELADA">
         {{ cancelar_form.as_p }}
-        <button class="btn-small btn-danger w-full">Cancelar OS</button>
+        <button class="btn-small btn-danger">Cancelar OS</button>
       </form>
 
     {% elif os.status == "EM_EXECUCAO" %}
+      <!-- Finalizar OS -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack mb-2">
         {% csrf_token %}
         <input type="hidden" name="acao" value="FINALIZADA">
         {{ finalizar_form.as_p }}
-        <button class="btn-small btn-success w-full">Finalizar OS</button>
+        <button class="btn-small btn-success">Finalizar OS</button>
       </form>
+
+      <!-- Cancelar OS (EM_EXECUCAO) -->
       <form action="{% url 'ordens:os_acao_status' os.id %}" method="post" class="stack">
         {% csrf_token %}
         <input type="hidden" name="acao" value="CANCELADA">
         {{ cancelar_form.as_p }}
-        <button class="btn-small btn-danger w-full">Cancelar OS</button>
+        <button class="btn-small btn-danger">Cancelar OS</button>
       </form>
     {% endif %}
   </aside>
-{% endif %}
-
+  {% endif %}
 
   <!-- Enviar Anexo -->
   <section class="os-card os-anexos">

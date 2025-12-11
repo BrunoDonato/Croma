@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="content-wrapper">
+
+  <div class="detail-header">
+    <div>
+      <h1 class="page-title">Detalhes da Ordem Externa #{{ ordem.id }}</h1>
+      <p class="page-subtitle">
+        {{ ordem.equipamento }} • {{ ordem.loja }}
+      </p>
+    </div>
+    <span class="status-pill">
+      {{ ordem.get_status_display }}
+    </span>
+  </div>
+
+  <section class="card form-card">
+    <form method="post" class="form-grid" novalidate>
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="{{ form.loja.id_for_label }}">Loja / Local de estoque</label>
+        {{ form.loja }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.prestador.id_for_label }}">Prestador</label>
+        {{ form.prestador }}
+      </div>
+
+      <div class="field field-full">
+        <label for="{{ form.os_interna.id_for_label }}">OS interna</label>
+        {{ form.os_interna }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.equipamento.id_for_label }}">Equipamento</label>
+        {{ form.equipamento }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.numero_serie.id_for_label }}">Número de série</label>
+        {{ form.numero_serie }}
+      </div>
+
+      <div class="field field-full">
+        <label for="{{ form.descricao_defeito.id_for_label }}">Descrição do defeito</label>
+        {{ form.descricao_defeito }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.status.id_for_label }}">Status</label>
+        {{ form.status }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.prioridade.id_for_label }}">Prioridade</label>
+        {{ form.prioridade }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.data_envio.id_for_label }}">Data de envio</label>
+        {{ form.data_envio }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.data_previsao_retorno.id_for_label }}">Previsão de retorno</label>
+        {{ form.data_previsao_retorno }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.data_retorno.id_for_label }}">Data de retorno</label>
+        {{ form.data_retorno }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.numero_os_prestador.id_for_label }}">Nº OS prestador</label>
+        {{ form.numero_os_prestador }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.valor_orcado.id_for_label }}">Valor orçado</label>
+        {{ form.valor_orcado }}
+      </div>
+
+      <div class="field">
+        <label for="{{ form.valor_aprovado.id_for_label }}">Valor aprovado</label>
+        {{ form.valor_aprovado }}
+      </div>
+
+      <div class="field field-full">
+        <label for="{{ form.observacoes.id_for_label }}">Observações</label>
+        {{ form.observacoes }}
+      </div>
+
+      <div class="form-actions">
+        <a href="{% url 'prestadores:ordem_externa_lista' %}" class="btn-small btn-clean">
+          Voltar
+        </a>
+        <button type="submit" class="btn">
+          Salvar alterações
+        </button>
+      </div>
+    </form>
+  </section>
+
+</main>
+{% endblock %}

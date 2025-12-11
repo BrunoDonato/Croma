@@ -37,6 +37,8 @@ urlpatterns = [
     path("relatorios/", include(("relatorios.urls", "relatorios"), namespace="relatorios")),
     path("", home_router, name="home"),
     path("estoque/", include(("estoque.urls", "estoque"), namespace="estoque")),
+    path("prestadores/", include("prestadores.urls")),
+
 ]
 
 if settings.DEBUG:

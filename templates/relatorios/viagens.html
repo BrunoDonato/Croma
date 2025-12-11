@@ -6,11 +6,13 @@
   <section class="card card--admin">
     <h1>Relatórios de Viagens</h1>
 
-    {# KPIs simples #}
     {% if total_viagens or dist_status %}
     <div class="kpi-row" style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:12px;margin-bottom:16px;">
       {% if total_viagens is not None %}
-      <div class="kpi-card"><div class="kpi-title">Total de Viagens</div><div class="kpi-value">{{ total_viagens }}</div></div>
+      <div class="kpi-card">
+        <div class="kpi-title">Total de Viagens</div>
+        <div class="kpi-value">{{ total_viagens }}</div>
+      </div>
       {% endif %}
       {% for s in dist_status %}
       <div class="kpi-card">
@@ -21,7 +23,6 @@
     </div>
     {% endif %}
 
-    {# Gráficos #}
     {% if viagens_por_loja or viagens_por_mes %}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px;">
       {% if viagens_por_loja %}
@@ -29,21 +30,24 @@
         <h2>Lojas que mais receberam visitas</h2>
         <canvas id="chartTopLojas" height="140"></canvas>
 
-          <table class="table">
-      <thead>
-        <tr><th>Loja</th><th style="width:160px;text-align:right;">Qtd. de Viagens</th></tr>
-      </thead>
-      <tbody>
-        {% for r in viagens_por_loja %}
-          <tr>
-            <td>{{ r.nome }}</td>
-            <td style="text-align:right;">{{ r.qtd }}</td>
-          </tr>
-        {% empty %}
-          <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Loja</th>
+              <th style="width:160px;text-align:right;">Qtd. de Viagens</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in viagens_por_loja %}
+              <tr>
+                <td>{{ r.nome }}</td>
+                <td style="text-align:right;">{{ r.qtd }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </section>
       {% endif %}
 
@@ -51,29 +55,128 @@
       <section class="card">
         <h2>Viagens por mês</h2>
         <canvas id="chartMes" height="140"></canvas>
-          <table class="table">
-      <thead>
-        <tr><th>Mês</th><th style="width:160px;text-align:right;">Qtd. de Viagens</th></tr>
-      </thead>
-      <tbody>
-        {% for r in viagens_por_mes %}
-          <tr>
-            <td>{{ r.mes|date:"m/Y" }}</td>
-            <td style="text-align:right;">{{ r.qtd }}</td>
-          </tr>
-        {% empty %}
-          <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th style="width:160px;text-align:right;">Qtd. de Viagens</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in viagens_por_mes %}
+              <tr>
+                <td>{{ r.mes|date:"m/Y" }}</td>
+                <td style="text-align:right;">{{ r.qtd }}</td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="2">Nenhuma viagem registrada.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </section>
       {% endif %}
     </div>
     {% endif %}
 
-    {# Tabela de viagens #}
     {% if viagens %}
     <h3 style="margin-top:24px;">Viagens (últimas)</h3>
+
+
+    <form method="get" class="filter-grid viagens-filters">
+
+  <div class="field">
+    <label for="origem">Origem</label>
+    <select name="origem" id="origem" class="filter-select">
+      <option value="">Todas</option>
+      {% for l in lojas %}
+        <option value="{{ l.id }}"
+          {% if origem_escolhida == l.id|stringformat:"s" %}selected{% endif %}>
+          {{ l.nome }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="destino">Destino</label>
+    <select name="destino" id="destino" class="filter-select">
+      <option value="">Todos</option>
+      {% for l in lojas %}
+        <option value="{{ l.id }}"
+          {% if destino_escolhida == l.id|stringformat:"s" %}selected{% endif %}>
+          {{ l.nome }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="responsavel">Responsável</label>
+    <select name="responsavel" id="responsavel" class="filter-select">
+      <option value="">Todos</option>
+      {% for r in responsaveis %}
+        <option value="{{ r.responsavel_id }}"
+          {% if responsavel_escolhido == r.responsavel_id|stringformat:"s" %}selected{% endif %}>
+          {{ r.responsavel__username }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="status">Status</label>
+    <select name="status" id="status" class="filter-select">
+      <option value="">Todos</option>
+      {% if status_choices %}
+        {% for key, label in status_choices %}
+          <option value="{{ key }}"
+            {% if status_escolhido == key %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      {% else %}
+        {% for s in status_distintos %}
+          <option value="{{ s }}"
+            {% if status_escolhido == s %}selected{% endif %}>
+            {{ s }}
+          </option>
+        {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label for="dt_ini">De</label>
+    <input type="date" id="dt_ini" name="dt_ini"
+           class="filter-input"
+           value="{{ dt_ini|default:'' }}">
+  </div>
+
+  <div class="field">
+    <label for="dt_fim">Até</label>
+    <input type="date" id="dt_fim" name="dt_fim"
+           class="filter-input"
+           value="{{ dt_fim|default:'' }}">
+  </div>
+
+  <div class="filter-actions viagens-actions">
+    <button type="submit" class="btn-small btn-filter">Filtrar</button>
+
+    <a href="{% url 'relatorios:viagens' %}"
+       class="btn-small btn-clean">
+      Limpar
+    </a>
+
+    <a href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}export=csv"
+       class="btn-small btn-export">
+      Exportar CSV
+    </a>
+  </div>
+</form>
+
+
+
     <table class="table">
       <thead>
         <tr>
@@ -104,22 +207,18 @@
   </section>
 </main>
 
-{# Dados seguros para JS #}
 {% if viagens_por_loja %}{{ viagens_por_loja|json_script:"viagens-por-loja" }}{% endif %}
 {% if viagens_por_mes %}{{ viagens_por_mes|json_script:"viagens-por-mes" }}{% endif %}
 
-{# Chart.js #}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 (function () {
-  // formata 'YYYY-MM-DD' -> 'MM/YYYY'
   function mesLabel(ymd) {
     if (!ymd) return '';
-    const [y,m] = String(ymd).split('-');
+    const [y, m] = String(ymd).split('-');
     return `${m}/${y}`;
   }
 
-  // Top Lojas
   const lojasNode = document.getElementById('viagens-por-loja');
   if (lojasNode) {
     const raw = JSON.parse(lojasNode.textContent || '[]');
@@ -138,7 +237,6 @@
     });
   }
 
-  // Viagens por mês
   const mesNode = document.getElementById('viagens-por-mes');
   if (mesNode) {
     const raw = JSON.parse(mesNode.textContent || '[]');

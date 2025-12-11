@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="page-content">
+  <div class="page-header">
+    <h1 class="page-title">Ordens externas</h1>
+  </div>
+
+  <section class="card filter-card">
+    <form method="get" class="filters-row">
+
+    <input
+        type="text"
+        name="q"
+        class="filter-input"
+        placeholder="Buscar equipamento / nº série / OS prestador"
+        value="{{ busca }}"
+    >
+
+    <select name="status" class="filter-select">
+      <option value="" disabled {% if not status_escolhido %}selected{% endif %} hidden>Status</option>
+      {% for key, label in ordens.model.STATUS_CHOICES %}
+        <option value="{{ key }}" {% if status_escolhido == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="prioridade" class="filter-select">
+      <option value="" disabled {% if not prioridade_escolhida %}selected{% endif %} hidden>Prioridade</option>
+      {% for key, label in ordens.model.PRIORIDADE_CHOICES %}
+        <option value="{{ key }}" {% if prioridade_escolhida == key %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="prestador" class="filter-select">
+      <option value="" disabled {% if not prestador_escolhido %}selected{% endif %} hidden>Prestador</option>
+      {% for p in prestadores %}
+        <option value="{{ p.id }}" {% if prestador_escolhido == p.id|stringformat:"s" %}selected{% endif %}>{{ p.nome }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="loja" class="filter-select">
+      <option value="" disabled {% if not loja_escolhida %}selected{% endif %} hidden>Loja</option>
+      {% for l in lojas %}
+        <option value="{{ l.id }}" {% if loja_escolhida == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
+      {% endfor %}
+    </select>
+
+    <div class="filters-buttons">
+        <button class="btn-small btn-filter" type="submit">Filtrar</button>
+
+        <a href="{% url 'prestadores:ordem_externa_lista' %}" class="btn-small btn-clean">
+          Limpar
+        </a>
+
+        <a
+          href="?{% if request.GET %}{{ request.GET.urlencode }}&{% endif %}export=csv"
+          class="btn-small btn-export"
+        >
+          Exportar CSV
+        </a>
+    </div>
+
+</form>
+
+  </section>
+
+  <section class="card card-table">
+    <div class="card-header">
+      <a href="{% url 'prestadores:ordem_externa_nova' %}" class="btn-new">Nova ordem externa</a>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Loja</th>
+          <th>Equipamento</th>
+          <th>Prestador</th>
+          <th>Status</th>
+          <th>Prioridade</th>
+          <th>Envio</th>
+          <th>Previsão</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for ordem in ordens %}
+        <tr>
+          <td>{{ ordem.id }}</td>
+          <td>{{ ordem.loja }}</td>
+          <td>{{ ordem.equipamento }}</td>
+          <td>{{ ordem.prestador }}</td>
+          <td>{{ ordem.get_status_display }}</td>
+          <td>{{ ordem.get_prioridade_display }}</td>
+          <td>{{ ordem.data_envio|date:"d/m/Y" }}</td>
+          <td>{{ ordem.data_previsao_retorno|date:"d/m/Y" }}</td>
+          <td>
+            <a href="{% url 'prestadores:ordem_externa_detalhe' ordem.id %}" class="link">
+              Detalhes
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="9">Nenhuma ordem encontrada.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

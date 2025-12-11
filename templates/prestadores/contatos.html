@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="content-wrapper">
+
+  <div class="page-header">
+    <h1 class="page-title">Contatos de prestadores</h1>
+  </div>
+
+  <section class="card filter-card">
+    <form method="get" class="filters-row">
+      <input
+        type="text"
+        name="q"
+        class="filter-input"
+        placeholder="Buscar por nome ou telefone"
+        value="{{ busca }}"
+      >
+
+      <div class="filters-buttons">
+        <button type="submit" class="btn-small btn-filter">Filtrar</button>
+        <a href="{% url 'prestadores:contatos_lista' %}" class="btn-small btn-clean">Limpar</a>
+      </div>
+    </form>
+  </section>
+
+  <section class="card card-table">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Cidade</th>
+          <th>E-mail</th>
+          <th>Observações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in prestadores %}
+          <tr>
+            <td>{{ p.nome }}</td>
+            <td>{{ p.telefone }}</td>
+            <td>{{p.cidade }}</td>
+            <td>{{ p.email|default:"-" }}</td>
+            <td>{{ p.observacoes|default:"-" }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="4">Nenhum prestador encontrado.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+</main>
+{% endblock %}

@@ -2,40 +2,51 @@
 {% load static %}
 
 {% block content %}
-<main class="main-content with-sidebar">
+<main class="container--wide">
 
   <!-- Filtros -->
-  <section class="card">
-    <h1>Relatório de Problemas (Categorias)</h1>
+  <section class="card filter-card">
+    <h1 class="page-title">Relatório de Problemas</h1>
 
-    <form method="get" class="filters" style="display:grid;grid-template-columns:repeat(5,minmax(160px,1fr));gap:12px;align-items:end;">
-      <div class="field">
-        <label for="loja">Loja</label>
-        <select name="loja" id="loja">
-          <option value="">Todas</option>
-          {% for l in lojas %}
-            <option value="{{ l.id }}" {% if request.GET.loja == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
-          {% endfor %}
-        </select>
-      </div>
+    <form method="get" class="filters-row">
 
-      <div class="field">
-        <label for="dt_ini">De</label>
-        <input type="date" id="dt_ini" name="dt_ini" value="{{ request.GET.dt_ini|default:'' }}">
-      </div>
+  <div class="field">
+    <label for="loja">Loja</label>
+    <select name="loja" id="loja" class="filter-select">
+      <option value="">Todas</option>
+      {% for l in lojas %}
+        <option value="{{ l.id }}" {% if request.GET.loja == l.id|stringformat:"s" %}selected{% endif %}>{{ l.nome }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
-      <div class="field">
-        <label for="dt_fim">Até</label>
-        <input type="date" id="dt_fim" name="dt_fim" value="{{ request.GET.dt_fim|default:'' }}">
-      </div>
+  <div class="field">
+    <label for="dt_ini">De</label>
+    <input type="date" id="dt_ini" name="dt_ini" value="{{ request.GET.dt_ini|default:'' }}" class="filter-input">
+  </div>
 
-      <div class="field" style="display:flex;gap:8px;">
-        <button type="submit" class="btn-small">Aplicar</button>
-        <a class="btn-small" href="{% url 'relatorios:problemas' %}">Limpar</a>
-        <a class="btn-small" href="{% url 'relatorios:os_csv' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}">Exportar CSV</a>
+  <div class="field">
+    <label for="dt_fim">Até</label>
+    <input type="date" id="dt_fim" name="dt_fim" value="{{ request.GET.dt_fim|default:'' }}" class="filter-input">
+  </div>
 
-      </div>
-    </form>
+  <div class="filters-buttons">
+    <button type="submit" class="btn-small btn-filter">Filtrar</button>
+
+    <a class="btn-small btn-clean" href="{% url 'relatorios:problemas' %}">
+      Limpar
+    </a>
+
+    <a
+      class="btn-small btn-export"
+      href="{% url 'relatorios:os_csv' %}{% if request.GET %}?{{ request.GET.urlencode }}{% endif %}"
+    >
+      Exportar CSV
+    </a>
+  </div>
+
+</form>
+
   </section>
 
   <!-- Tabela -->
