@@ -55,7 +55,6 @@ class SaldoInline(admin.TabularInline):
 
 
 # Admins
-
 @admin.register(Loja)
 class LojaAdmin(admin.ModelAdmin):
     list_display = ("nome", "endereco", "ativa", "is_central", "itens_com_saldo")

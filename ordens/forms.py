@@ -66,7 +66,7 @@ class OrdemServicoForm(forms.ModelForm):
                     self.fields["loja"] = ModelChoiceField(queryset=Loja.objects.none(), widget=forms.HiddenInput())
 
 
-# Comentários / Andamentos
+# Comentários/Andamentos
 class AndamentoForm(forms.ModelForm):
     class Meta:
         model = AndamentoOS

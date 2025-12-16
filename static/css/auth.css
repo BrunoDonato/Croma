@@ -347,7 +347,7 @@ textarea:focus {
 }
 .table tr:hover td { background: #fafbff; }
 
-/* OS: PÁGINA DE DETALHE – GRID GERAL */
+/* OS: PÁGINA DE DETALHE – grid geral */
 .main-content.with-sidebar.os-page {
   margin-left: 232px;
   padding: 24px 24px;
@@ -393,7 +393,6 @@ textarea:focus {
   }
 }
 
-/* Ações da OS mais compactas */
 .os-acoes form {
   max-width: 360px;
 }
@@ -402,7 +401,6 @@ textarea:focus {
   width: 100%;
 }
 
-/* Layout especial para status ABERTA (Iniciar análise + motivo + Cancelar) */
 .os-acoes .acao-aberta {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -15,7 +15,7 @@ from django.utils import timezone
 from estoque.models import Loja
 
 
-# Helper aplica filtros da tela (OS)
+# Aplica filtros da tela (OS)
 def _filtrar_os(request, qs):
     status = (request.GET.get("status") or "").strip()
     loja_id = (request.GET.get("loja") or "").strip()
@@ -33,7 +33,7 @@ def _filtrar_os(request, qs):
     return qs
 
 
-# Helper aplica filtros da tela VIAGENS. Filtros: origem, destino, responsavel, status, dt_ini, dt_fim
+# Aplica filtros da tela VIAGENS. Filtros: origem, destino, responsavel, status, dt_ini, dt_fim
 def _filtrar_viagens(request, qs):
     origem_id = (request.GET.get("origem") or "").strip()
     destino_id = (request.GET.get("destino") or "").strip()
@@ -67,7 +67,7 @@ def relatorio_viagens(request):
         .order_by("-data_partida")
     )
 
-    # ---------- VISÃO GERAL (SEM FILTRO) ----------
+    # VISÃO GERAL (sem filtro)
     qs_global = qs_base
 
     viagens_por_loja = (
@@ -94,7 +94,7 @@ def relatorio_viagens(request):
                  .order_by("-qtd")[:5]
     )
 
-    # ---------- FILTROS (APENAS TABELA / CSV) ----------
+    # FILTROS (APENAS TABELA / CSV)
     qs = _filtrar_viagens(request, qs_base)
 
     # valores para manter selects marcados no template
@@ -105,7 +105,7 @@ def relatorio_viagens(request):
     dt_ini = (request.GET.get("dt_ini") or "").strip()
     dt_fim = (request.GET.get("dt_fim") or "").strip()
 
-    # ---------- EXPORTAR CSV (VIAGENS FILTRADAS) ----------
+    # EXPORTAR CSV (VIAGENS FILTRADAS)
     if request.GET.get("export") == "csv":
         response = HttpResponse(
             content_type="text/csv; charset=utf-8-sig"
@@ -427,7 +427,7 @@ def rel_problemas(request):
     cat_labels = [d["categoria__nome"] for d in dist_cat]
     cat_values = [d["total"] for d in dist_cat]
 
-    # MTTR por categoria (média em horas), apenas finalizadas
+    # MTTR por categoria, apenas OS finalizadas
     delta = ExpressionWrapper(
         F("data_fechamento") - F("data_abertura"),
         output_field=DurationField()

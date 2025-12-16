@@ -21,7 +21,7 @@ def is_admin(user):
     return user.is_superuser or user.groups.filter(name="admin").exists()
 
 
-# Tela de Login personalizada
+# Tela de Login
 class CustomLoginView(auth_views.LoginView):
     MAX_ATTEMPTS = 5
     LOCK_SECONDS = 300

@@ -37,7 +37,7 @@ class TecnicoAdminsFilter(admin.SimpleListFilter):
         return queryset
 
 
-# Novo: categoria de problema
+# Categoria de problema
 @admin.register(CategoriaProblema)
 class CategoriaProblemaAdmin(admin.ModelAdmin):
     list_display = ("nome", "ativo")
@@ -55,7 +55,7 @@ class OrdemServicoAdmin(admin.ModelAdmin):
         "tecnico_responsavel",
         "prioridade",
         "status",
-        "categoria",  # <-- exibe a categoria no admin
+        "categoria",
         "data_abertura",
         "data_fechamento",
     )
@@ -64,7 +64,7 @@ class OrdemServicoAdmin(admin.ModelAdmin):
         "status",
         "loja",
         "prioridade",
-        "categoria",  # <-- filtro lateral por categoria
+        "categoria",
         TecnicoAdminsFilter,
         "data_abertura",
         "data_fechamento",
@@ -129,7 +129,7 @@ class OrdemServicoAdmin(admin.ModelAdmin):
             kwargs["queryset"] = User.objects.filter(
                 Q(is_superuser=True) | Q(groups__name="admin")
             ).distinct().order_by("username")
-        if db_field.name == "categoria":  # <-- restringe categorias ativas
+        if db_field.name == "categoria":
             from .models import CategoriaProblema
             kwargs["queryset"] = CategoriaProblema.objects.filter(ativo=True).order_by("nome")
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
