@@ -1,0 +1,82 @@
+[
+{
+  "model": "contas.perfil",
+  "pk": 1,
+  "fields": {
+    "user": [
+      "Pamela"
+    ],
+    "loja": 1
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 2,
+  "fields": {
+    "user": [
+      "ester"
+    ],
+    "loja": 1
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 5,
+  "fields": {
+    "user": [
+      "herlon"
+    ],
+    "loja": 3
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "edson"
+    ],
+    "loja": 7
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "elandia"
+    ],
+    "loja": 2
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "jandielle"
+    ],
+    "loja": 5
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 9,
+  "fields": {
+    "user": [
+      "gustavo"
+    ],
+    "loja": 6
+  }
+},
+{
+  "model": "contas.perfil",
+  "pk": 10,
+  "fields": {
+    "user": [
+      "jonas"
+    ],
+    "loja": 8
+  }
+}
+]

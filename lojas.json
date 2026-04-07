@@ -1,0 +1,82 @@
+[
+{
+  "model": "estoque.loja",
+  "pk": 1,
+  "fields": {
+    "nome": "Cine Juiz de Fora",
+    "endereco": "Shopping Jardim Norte",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 2,
+  "fields": {
+    "nome": "Cine Belo Horizonte",
+    "endereco": "Shopping Contagem",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 3,
+  "fields": {
+    "nome": "Cine Guarapari Praia",
+    "endereco": "Orla da Praia do Morro",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 4,
+  "fields": {
+    "nome": "Cine Guarapari Shopping",
+    "endereco": "Shopping Guarapari",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 5,
+  "fields": {
+    "nome": "Cine Cabo Frio",
+    "endereco": "Shopping Park Lagos",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 6,
+  "fields": {
+    "nome": "Cine Rio das Ostras",
+    "endereco": "Shopping Plaza Rio das Ostras",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 7,
+  "fields": {
+    "nome": "Cine Campos dos Goytacazes",
+    "endereco": "Shopping Partage",
+    "ativa": true,
+    "is_central": false
+  }
+},
+{
+  "model": "estoque.loja",
+  "pk": 8,
+  "fields": {
+    "nome": "Estoque Central",
+    "endereco": "Santa Bárbara do Tugúrio",
+    "ativa": true,
+    "is_central": true
+  }
+}
+]

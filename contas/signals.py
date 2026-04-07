@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group, Permission
 from django.apps import apps
 from django.contrib.auth import get_user_model
 from .models import Perfil
+import os
 
 User = get_user_model()
 
@@ -19,6 +20,6 @@ def ensure_default_groups(sender, **kwargs):
     user_group.save()
 
 @receiver(post_save, sender=User)
-def criar_perfil(sender, instance, created, **kwargs):
-    if created:
-        Perfil.objects.create(user=instance)
+def criar_perfil(sender, instance, created, raw, **kwargs):
+    if created and not raw:
+        Perfil.objects.get_or_create(user=instance)
