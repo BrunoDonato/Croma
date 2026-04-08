@@ -1,11 +1,10 @@
+import requests as req
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
 
 
 class LoginAPIView(APIView):
@@ -62,19 +61,24 @@ class GoogleLoginAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        token = request.data.get("id_token")
+        access_token = request.data.get("id_token")
 
-        if not token:
+        if not access_token:
             return Response(
                 {"erro": "Token não informado."},
                 status=400
             )
 
         try:
-            info = id_token.verify_firebase_token(
-                token,
-                google_requests.Request()
+            google_response = req.get(
+                "https://www.googleapis.com/oauth2/v3/userinfo",
+                headers={"Authorization": f"Bearer {access_token}"}
             )
+            info = google_response.json()
+
+            if "error" in info:
+                return Response({"erro": "Token inválido."}, status=401)
+
             email = info.get("email")
             nome = info.get("name", email)
 
@@ -110,6 +114,6 @@ class GoogleLoginAPIView(APIView):
 
         except Exception as e:
             return Response(
-                {"erro": "Token inválido.", "detalhe": str(e)},
+                {"erro": "Erro ao validar token.", "detalhe": str(e)},
                 status=401
             )
