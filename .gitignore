@@ -25,3 +25,10 @@ staticfiles/
 # Arquivos de sistema
 .DS_Store
 Thumbs.db
+
+dados.json
+lojas.json
+lojas_utf8.json
+perfis.json
+users.json
+usuarios.json
