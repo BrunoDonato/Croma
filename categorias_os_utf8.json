@@ -1,0 +1,178 @@
+[
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 1,
+    "fields": {
+      "nome": "Som",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 2,
+    "fields": {
+      "nome": "Projetor",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 3,
+    "fields": {
+      "nome": "Lampada Projetor",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 4,
+    "fields": {
+      "nome": "Encoder",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 5,
+    "fields": {
+      "nome": "Pivô",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 6,
+    "fields": {
+      "nome": "Motor",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 7,
+    "fields": {
+      "nome": "Placa de Efeitos",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 8,
+    "fields": {
+      "nome": "Efeito Neve",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 9,
+    "fields": {
+      "nome": "Efeito Bolha",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 10,
+    "fields": {
+      "nome": "Efeito Strobo",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 11,
+    "fields": {
+      "nome": "Efeito Vento",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 12,
+    "fields": {
+      "nome": "Efeito Agua",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 13,
+    "fields": {
+      "nome": "Efeito Pega Perna",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 14,
+    "fields": {
+      "nome": "Efeito CO2",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 15,
+    "fields": {
+      "nome": "Efeito Sirene",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 16,
+    "fields": {
+      "nome": "Compressor",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 17,
+    "fields": {
+      "nome": "Inversor",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 18,
+    "fields": {
+      "nome": "Transformador",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 19,
+    "fields": {
+      "nome": "Cadeira",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 20,
+    "fields": {
+      "nome": "Cinto de Segurança",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 21,
+    "fields": {
+      "nome": "Computador",
+      "ativo": true
+    }
+  },
+  {
+    "model": "ordens.categoriaproblema",
+    "pk": 22,
+    "fields": {
+      "nome": "Plataforma",
+      "ativo": true
+    }
+  }
+]

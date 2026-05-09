@@ -1,0 +1,389 @@
+[
+  {
+    "model": "ordens.ordemservico",
+    "pk": 1,
+    "fields": {
+      "loja": 1,
+      "solicitante": [
+        "Pamela"
+      ],
+      "descricao_problema": "Uma cadeira precisa ser trocada.",
+      "categoria": 19,
+      "prioridade": "MEDIA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-10-16T21:59:15.500Z",
+      "data_fechamento": "2025-10-17T16:42:27.987Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "A cadeira está com o estofado rasgado, o que prejudica a aparência da loja e o conforto do cliente.",
+      "solucao": "Serviço simples, onde foi apenas substituida uma cadeira.",
+      "motivo_cancelamento": "",
+      "custo_total": "100.00"
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 2,
+    "fields": {
+      "loja": 1,
+      "solicitante": [
+        "Pamela"
+      ],
+      "descricao_problema": "A base que segura o amortecedor quebrou, e o amortecedor caiu, a cabine está parada.",
+      "categoria": 22,
+      "prioridade": "CRITICA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-10-16T22:20:32.765Z",
+      "data_fechamento": "2025-11-05T14:31:40.263Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "Enquanto nao for solucionado, nao tem como trabalhar.",
+      "solucao": "Foi soldado no lugar, problema resolvido,",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 3,
+    "fields": {
+      "loja": 7,
+      "solicitante": [
+        "edson"
+      ],
+      "descricao_problema": "Projetor está desligando sozinho após um tempo.",
+      "categoria": 2,
+      "prioridade": "ALTA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-10-17T14:33:58.272Z",
+      "data_fechamento": "2025-11-06T22:59:56.025Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "O projetor trabalha por um tempo, mas ele fica desligando sozinho, creio que seja preciso trocar e mandar para manutenção.",
+      "solucao": "Projetor substituido, e mandado para manutenção.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 4,
+    "fields": {
+      "loja": 3,
+      "solicitante": [
+        "herlon"
+      ],
+      "descricao_problema": "O computador não liga.",
+      "categoria": 21,
+      "prioridade": "CRITICA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-10-17T14:35:09.555Z",
+      "data_fechamento": "2025-11-07T14:27:21.430Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "O computador não quer ligar, não dá nem sinal de vida.",
+      "solucao": "Fonte de alimentação estava queimada, substituí e está funcionando.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 5,
+    "fields": {
+      "loja": 5,
+      "solicitante": [
+        "jandielle"
+      ],
+      "descricao_problema": "O efeito do estrobo disparou, e não para de piscar.",
+      "categoria": 10,
+      "prioridade": "BAIXA",
+      "status": "EM_EXECUCAO",
+      "data_abertura": "2025-10-17T14:36:37.458Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "Após terminar um filme, o efeito não desarmou, e continua piscando sem parar.",
+      "solucao": "",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 6,
+    "fields": {
+      "loja": 6,
+      "solicitante": [
+        "gustavo"
+      ],
+      "descricao_problema": "O visor da placa não mostra as informações.",
+      "categoria": null,
+      "prioridade": "BAIXA",
+      "status": "CANCELADA",
+      "data_abertura": "2025-10-17T14:37:59.203Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "Quando possivel, substituir o visor da placa, sem ele, fica dificil para acompanhar a quantidade de créditos.",
+      "solucao": "",
+      "motivo_cancelamento": "OS Cancelada, o aparelho não apresenta defeito.",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 7,
+    "fields": {
+      "loja": 1,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Cabo do projetor com mal contato",
+      "categoria": null,
+      "prioridade": "MEDIA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-11-05T14:32:22.395Z",
+      "data_fechamento": "2025-11-05T14:34:15.967Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "Perdendo sinal de imagem.",
+      "solucao": "Substituição do cabo. Resolvido.",
+      "motivo_cancelamento": "",
+      "custo_total": "50.00"
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 8,
+    "fields": {
+      "loja": 3,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Som está falhando as vezes",
+      "categoria": 1,
+      "prioridade": "MEDIA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-11-05T16:09:04.329Z",
+      "data_fechamento": "2025-11-05T17:47:09.186Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "Troquei um fio que estava em curto.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 9,
+    "fields": {
+      "loja": 3,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Projetor perdendo sinal",
+      "categoria": 2,
+      "prioridade": "MEDIA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-11-05T18:01:30.044Z",
+      "data_fechamento": "2025-11-05T18:08:19.185Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "Problema era na resolução, que ao ser alterada resolveu o problema",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 10,
+    "fields": {
+      "loja": 6,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Strobo disparado",
+      "categoria": 10,
+      "prioridade": "MEDIA",
+      "status": "EM_EXECUCAO",
+      "data_abertura": "2025-11-05T18:01:42.596Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 11,
+    "fields": {
+      "loja": 6,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "CO2 acabou",
+      "categoria": 14,
+      "prioridade": "BAIXA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-11-05T18:01:56.022Z",
+      "data_fechamento": "2025-11-14T19:08:12.269Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "Substitui",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 12,
+    "fields": {
+      "loja": 5,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Cinto de segurança agarrou",
+      "categoria": 20,
+      "prioridade": "MEDIA",
+      "status": "EM_EXECUCAO",
+      "data_abertura": "2025-11-05T18:02:21.407Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 13,
+    "fields": {
+      "loja": 4,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Computador travando, e com dificuldade para ligar.",
+      "categoria": 21,
+      "prioridade": "ALTA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-12-10T15:28:21.702Z",
+      "data_fechamento": "2025-12-11T02:01:40.073Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": "",
+      "solucao": "Substitui o computador pelo reserva.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 14,
+    "fields": {
+      "loja": 4,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Compressor está com vazamento",
+      "categoria": 16,
+      "prioridade": "ALTA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-12-11T02:05:23.507Z",
+      "data_fechamento": "2025-12-11T14:17:44.917Z",
+      "tecnico_responsavel": [
+        "jonas"
+      ],
+      "observacoes": "",
+      "solucao": "Mangueira estava com folga. Substitui a abraçadeira e apertei novamente.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 15,
+    "fields": {
+      "loja": 1,
+      "solicitante": [
+        "Pamela"
+      ],
+      "descricao_problema": "Lampada do Projetor queimou.",
+      "categoria": 3,
+      "prioridade": "CRITICA",
+      "status": "FINALIZADA",
+      "data_abertura": "2025-12-11T17:30:17.756Z",
+      "data_fechamento": "2025-12-11T17:32:39.666Z",
+      "tecnico_responsavel": [
+        "bruno"
+      ],
+      "observacoes": ";;;;",
+      "solucao": "Troquei a lâmpada.",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 16,
+    "fields": {
+      "loja": 4,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Compressor vazando.",
+      "categoria": null,
+      "prioridade": "ALTA",
+      "status": "EM_ANALISE",
+      "data_abertura": "2025-12-16T02:30:13.229Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": null,
+      "observacoes": "",
+      "solucao": "",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  },
+  {
+    "model": "ordens.ordemservico",
+    "pk": 17,
+    "fields": {
+      "loja": 1,
+      "solicitante": [
+        "bruno"
+      ],
+      "descricao_problema": "Compressor nao pode ser ligado pois desarma a energia do quadro da loja",
+      "categoria": null,
+      "prioridade": "ALTA",
+      "status": "ABERTA",
+      "data_abertura": "2025-12-16T02:31:01.722Z",
+      "data_fechamento": null,
+      "tecnico_responsavel": null,
+      "observacoes": "",
+      "solucao": "",
+      "motivo_cancelamento": "",
+      "custo_total": null
+    }
+  }
+]

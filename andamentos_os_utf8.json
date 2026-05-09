@@ -1,0 +1,767 @@
+[
+  {
+    "model": "ordens.andamentoos",
+    "pk": 1,
+    "fields": {
+      "os": 1,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:32:42.594Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 2,
+    "fields": {
+      "os": 6,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:35:34.994Z",
+      "texto": "Cancelada",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "CANCELADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 3,
+    "fields": {
+      "os": 2,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:37:05.803Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 4,
+    "fields": {
+      "os": 2,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:38:05.047Z",
+      "texto": "Situação crítica, precisa ser resolvida com prioridade máxima.",
+      "visibilidade": "INTERNO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 5,
+    "fields": {
+      "os": 2,
+      "autor": [
+        "jonas"
+      ],
+      "criado_em": "2025-10-17T16:39:41.042Z",
+      "texto": "Estive na loja, ja deixei algumas coisas necessárias.",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 6,
+    "fields": {
+      "os": 1,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:41:22.181Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 7,
+    "fields": {
+      "os": 1,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:42:27.988Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 8,
+    "fields": {
+      "os": 5,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:43:24.019Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 9,
+    "fields": {
+      "os": 2,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T16:43:43.414Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 10,
+    "fields": {
+      "os": 6,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T18:48:09.118Z",
+      "texto": "ajsndjabndf",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 11,
+    "fields": {
+      "os": 4,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-10-17T18:49:13.871Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 12,
+    "fields": {
+      "os": 4,
+      "autor": [
+        "jonas"
+      ],
+      "criado_em": "2025-10-17T18:50:06.968Z",
+      "texto": "asdkiasdjfnujasedof",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 13,
+    "fields": {
+      "os": 1,
+      "autor": [
+        "Pamela"
+      ],
+      "criado_em": "2025-10-24T15:00:22.794Z",
+      "texto": "aasda",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 14,
+    "fields": {
+      "os": 2,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T14:31:40.265Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 15,
+    "fields": {
+      "os": 7,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T14:32:37.026Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 16,
+    "fields": {
+      "os": 7,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T14:33:38.697Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 17,
+    "fields": {
+      "os": 7,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T14:34:15.969Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 18,
+    "fields": {
+      "os": 8,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T17:45:38.581Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 19,
+    "fields": {
+      "os": 8,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T17:46:07.511Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 20,
+    "fields": {
+      "os": 8,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T17:46:38.789Z",
+      "texto": "Problema está na fiação",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 21,
+    "fields": {
+      "os": 8,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T17:47:09.188Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 22,
+    "fields": {
+      "os": 9,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T18:07:41.751Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 23,
+    "fields": {
+      "os": 9,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T18:07:51.368Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 24,
+    "fields": {
+      "os": 9,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-05T18:08:19.186Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 25,
+    "fields": {
+      "os": 3,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-06T22:58:25.702Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 26,
+    "fields": {
+      "os": 3,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-06T22:59:08.343Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 27,
+    "fields": {
+      "os": 3,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-06T22:59:56.027Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 28,
+    "fields": {
+      "os": 4,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-07T14:26:45.315Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 29,
+    "fields": {
+      "os": 4,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-07T14:27:21.432Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 30,
+    "fields": {
+      "os": 11,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-14T19:07:39.416Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 31,
+    "fields": {
+      "os": 11,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-14T19:08:05.156Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 32,
+    "fields": {
+      "os": 11,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-11-14T19:08:12.270Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 33,
+    "fields": {
+      "os": 13,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-10T15:28:49.437Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 34,
+    "fields": {
+      "os": 13,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-10T15:28:57.618Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 35,
+    "fields": {
+      "os": 13,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T02:01:18.143Z",
+      "texto": "Realizando troca do Computador.",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 36,
+    "fields": {
+      "os": 13,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T02:01:40.075Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 37,
+    "fields": {
+      "os": 10,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T02:04:30.037Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 38,
+    "fields": {
+      "os": 10,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T02:04:34.446Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 39,
+    "fields": {
+      "os": 14,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T14:17:06.348Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 40,
+    "fields": {
+      "os": 14,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T14:17:09.638Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 41,
+    "fields": {
+      "os": 14,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T14:17:44.918Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 42,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T17:31:10.081Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 43,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T17:31:25.384Z",
+      "texto": "Fazendo a troca!",
+      "visibilidade": "PUBLICO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 44,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-11T17:31:46.100Z",
+      "texto": "Jonas, precisa trazer mais lampadas de reserva pra cá.",
+      "visibilidade": "INTERNO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 45,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "jonas"
+      ],
+      "criado_em": "2025-12-11T17:32:18.906Z",
+      "texto": "Ok",
+      "visibilidade": "INTERNO",
+      "status_de": "",
+      "status_para": ""
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 46,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "jonas"
+      ],
+      "criado_em": "2025-12-11T17:32:26.381Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 47,
+    "fields": {
+      "os": 15,
+      "autor": [
+        "jonas"
+      ],
+      "criado_em": "2025-12-11T17:32:39.668Z",
+      "texto": "Finalizada",
+      "visibilidade": "PUBLICO",
+      "status_de": "EM_EXECUCAO",
+      "status_para": "FINALIZADA"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 48,
+    "fields": {
+      "os": 12,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-16T02:29:32.053Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 49,
+    "fields": {
+      "os": 12,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-16T02:29:34.700Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 50,
+    "fields": {
+      "os": 5,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-16T02:29:49.037Z",
+      "texto": "Início da execução",
+      "visibilidade": "INTERNO",
+      "status_de": "EM_ANALISE",
+      "status_para": "EM_EXECUCAO"
+    }
+  },
+  {
+    "model": "ordens.andamentoos",
+    "pk": 51,
+    "fields": {
+      "os": 16,
+      "autor": [
+        "bruno"
+      ],
+      "criado_em": "2025-12-16T02:31:13.548Z",
+      "texto": "Início da análise",
+      "visibilidade": "INTERNO",
+      "status_de": "ABERTA",
+      "status_para": "EM_ANALISE"
+    }
+  }
+]
