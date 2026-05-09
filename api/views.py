@@ -251,3 +251,10 @@ class OSCategoriasAPIView(APIView):
     def get(self, request):
         categorias = CategoriaProblema.objects.filter(ativo=True).values("id", "nome")
         return Response(list(categorias))
+
+class LojasAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        lojas = Loja.objects.all().values("id", "nome")
+        return Response(list(lojas))

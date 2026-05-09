@@ -9,4 +9,5 @@ urlpatterns = [
     path("os/categorias/", views.OSCategoriasAPIView.as_view(), name="api_os_categorias"),
     path("os/", views.OSListaAPIView.as_view(), name="api_os_lista"),
     path("os/<int:pk>/", views.OSDetalheAPIView.as_view(), name="api_os_detalhe"),
+    path("lojas/", views.LojasAPIView.as_view(), name="api_lojas"),
 ]
