@@ -11,7 +11,7 @@ from ordens.models import OrdemServico, AndamentoOS, CategoriaProblema
 from estoque.models import Loja
 from django.db.models import Count
 from datetime import timedelta
-
+from django.db.models import Avg, F, ExpressionWrapper, DurationField
 
 class LoginAPIView(APIView):
     permission_classes = [AllowAny]
@@ -290,10 +290,25 @@ class DashboardAPIView(APIView):
             qs.values("status").annotate(total=Count("id")).order_by()
         )
 
+        dur_expr = ExpressionWrapper(
+            F("data_fechamento") - F("data_abertura"),
+            output_field=DurationField()
+        )
+        mttr_qs = qs.filter(
+            status="FINALIZADA",
+            data_fechamento__gte=inicio_mes
+        ).annotate(dur=dur_expr).aggregate(media=Avg("dur"))
+
+        mttr_horas = None
+        if mttr_qs["media"]:
+            total_sec = mttr_qs["media"].total_seconds()
+            mttr_horas = round(total_sec / 3600.0, 1)
+
         return Response({
             "kpi_abertas": kpi_abertas,
             "kpi_execucao": kpi_execucao,
             "kpi_finalizadas_mes": kpi_finalizadas_mes,
             "kpi_atrasadas": kpi_atrasadas,
+            "mttr_horas": mttr_horas,
             "dist_status": dist_status,
         })
