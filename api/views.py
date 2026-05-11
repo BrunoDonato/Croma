@@ -9,6 +9,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from ordens.models import OrdemServico, AndamentoOS, CategoriaProblema
 from estoque.models import Loja
+from django.db.models import Count
+from datetime import timedelta
 
 
 class LoginAPIView(APIView):
@@ -258,3 +260,40 @@ class LojasAPIView(APIView):
     def get(self, request):
         lojas = Loja.objects.all().values("id", "nome")
         return Response(list(lojas))
+
+class DashboardAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        is_admin = user.is_superuser or user.groups.filter(name="admin").exists()
+        agora = timezone.now()
+        inicio_mes = agora.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+        if is_admin:
+            qs = OrdemServico.objects.all()
+        else:
+            qs = OrdemServico.objects.filter(tecnico_responsavel=user)
+
+        kpi_abertas = qs.filter(status="ABERTA").count()
+        kpi_execucao = qs.filter(status="EM_EXECUCAO").count()
+        kpi_finalizadas_mes = qs.filter(
+            status="FINALIZADA",
+            data_fechamento__gte=inicio_mes
+        ).count()
+        kpi_atrasadas = qs.filter(
+            status__in=["ABERTA", "EM_ANALISE", "EM_EXECUCAO"],
+            data_abertura__lt=agora - timedelta(days=3)
+        ).count()
+
+        dist_status = list(
+            qs.values("status").annotate(total=Count("id")).order_by()
+        )
+
+        return Response({
+            "kpi_abertas": kpi_abertas,
+            "kpi_execucao": kpi_execucao,
+            "kpi_finalizadas_mes": kpi_finalizadas_mes,
+            "kpi_atrasadas": kpi_atrasadas,
+            "dist_status": dist_status,
+        })

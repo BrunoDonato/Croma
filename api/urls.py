@@ -10,4 +10,5 @@ urlpatterns = [
     path("os/", views.OSListaAPIView.as_view(), name="api_os_lista"),
     path("os/<int:pk>/", views.OSDetalheAPIView.as_view(), name="api_os_detalhe"),
     path("lojas/", views.LojasAPIView.as_view(), name="api_lojas"),
+    path("dashboard/", views.DashboardAPIView.as_view(), name="api_dashboard"),
 ]
